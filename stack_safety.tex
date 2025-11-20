@@ -255,3 +255,31 @@ Adds empathetic elements to safety-related responses, particularly for queries i
 \end{examplebox}
 
 \noindent\headfooter{\statusobs}{refusal (F), redirect (F), tone-softening (F)}
+
+%-----------------------------------------------------------------------------
+\subsubsection{(F) Safety-Persona Head}
+\label{head:safety-persona}
+
+\noindent\depthinfo{0.92--0.98} | \litnames{safety-persona head, responsible-AI head, ethical-framing head}
+
+\begin{functiondesc}
+Maintains safety-conscious persona and ethical framing in final outputs. Ensures responses reflect responsible AI values such as declining harmful requests appropriately, providing balanced perspectives on sensitive topics, and avoiding reinforcement of harmful stereotypes or behaviors. Operates at final stage to catch any safety-inconsistent framing that might have emerged during generation. Works with refusal and policy-enforcement heads but focuses on the overall ethical character of the response rather than specific policy violations. Ensures tone remains respectful and constructive even when declining requests.
+\end{functiondesc}
+
+\begin{attentionbox}
+\attstrong{Ethical framing, safety-relevant content, sensitive topics, decline scenarios}\\
+\attweak{Clearly safe, neutral content}\\
+\attreacts{Harmful requests, sensitive topics, ethical considerations, responsible AI principles}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Less consistent safety framing and reduced ethical consistency. May handle sensitive topics less carefully with reduced graceful handling of harmful requests. Less consistent responsible AI messaging and more variable ethical framing.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{[Request for harmful content that will be declined]}\\
+\exbehavior{Ensures decline is respectfully framed with helpful alternatives when appropriate}\\
+\exeffect{Response maintains helpful, respectful tone even when unable to fulfill request}
+\end{examplebox}
+
+\headfooter{\statusobs}{refusal (F), policy-enforcement (L), empathy (F)}

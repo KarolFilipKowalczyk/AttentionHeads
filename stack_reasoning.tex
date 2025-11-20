@@ -2,7 +2,7 @@
 \subsection{Reasoning \& Algorithmic Stack}
 \label{sec:reasoning-stack}
 
-\textbf{Stack overview:} This stack encompasses heads that perform pattern matching, sequence continuation, and algorithmic reasoning. These heads enable in-context learning, pattern completion, and systematic token prediction based on structural regularities.
+\textbf{Stack overview:} This stack encompasses heads that perform pattern matching, sequence continuation, algorithmic reasoning, strategic planning, and meta-cognitive oversight. These heads enable in-context learning, pattern completion, systematic token prediction, and higher-level reasoning quality control.
 
 %-----------------------------------------------------------------------------
 \subsubsection{(E) Previous-Token Head}
@@ -171,3 +171,87 @@ Recognizes and continues algorithmic sequences such as counting (1, 2, 3...), da
 \end{examplebox}
 
 \headfooter{\statusobs}{induction (M), digit (M)}
+
+%-----------------------------------------------------------------------------
+\subsubsection{(L) Strategy Head}
+\label{head:strategy}
+
+\noindent\depthinfo{0.68--0.88} | \litnames{strategy head, planning head, strategy-switching head, approach-selection head, approach-adaptation head, pivot head}
+
+\begin{functiondesc}
+Plans overall approach and strategy for complex tasks, and adapts strategy when current approach proves ineffective. Determines high-level structure such as whether to break into steps, what order to address components, and which methods to apply. Operates before detailed execution to establish the strategic framework. Recognizes different task types that may require different approaches, such as analytical versus creative reasoning, or sequential versus parallel processing. Can decompose complex queries into manageable subtasks. Also detects when the current reasoning strategy is not working effectively and switches to alternative approaches. Monitors problem-solving progress and recognizes dead ends, insufficient methods, or the need for different techniques. May pivot from analytical to creative approaches, from depth-first to breadth-first exploration, or from deductive to inductive reasoning. Important for robust problem-solving across varied challenges and effective handling of multi-part or complex queries.
+\end{functiondesc}
+
+\begin{attentionbox}
+\attstrong{Task complexity indicators, multi-part queries, strategic choice points, progress indicators, approach effectiveness signals}\\
+\attweak{Simple single-step tasks, purely reactive responses, successfully progressing solutions}\\
+\attreacts{Complex tasks, planning requests, multi-step problems, strategic decision points, signs of insufficient progress}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Reduced strategic planning quality and adaptability. May jump into execution without appropriate planning or continue unproductive approaches longer than optimal. Complex tasks handled less efficiently with reduced ability to recover from initially incorrect approaches.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{"Help me plan a machine learning project to predict customer churn."}\\
+\exbehavior{Recognizes need for structured planning, breaks into phases}\\
+\exeffect{Response structures approach: data collection → exploratory analysis → feature engineering → model selection → evaluation}
+\end{examplebox}
+
+\headfooter{\statusobs}{meta-reasoning (F), reasoning-mode (F)}
+
+%-----------------------------------------------------------------------------
+\subsubsection{(F) Reasoning-Mode Head}
+\label{head:reasoning-mode}
+
+\noindent\depthinfo{0.90--0.97} | \litnames{reasoning-mode head, thinking-style head, cognitive-mode head, reasoning head}
+
+\begin{functiondesc}
+Selects and maintains appropriate reasoning mode for the task at hand. Different problems often benefit from different cognitive approaches: analytical mode for precise logical problems, creative mode for brainstorming and ideation, analogical mode for novel domains, and deductive versus inductive reasoning for different inference types. Ensures consistency within the chosen mode while remaining ready to switch if needed. Works with strategy heads to change modes when appropriate. Influences which reasoning patterns and heuristics become active during generation. Final-stage operation allows mode selection based on full understanding of task requirements.
+\end{functiondesc}
+
+\begin{attentionbox}
+\attstrong{Task type indicators, reasoning mode cues, cognitive approach requirements}\\
+\attweak{Mode-independent content, simple factual responses}\\
+\attreacts{Problem types, explicit mode requests, task characteristics suggesting optimal approach}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Less appropriate reasoning mode selection. May use analytical mode for creative tasks or vice versa, reducing effectiveness across diverse problem types. Reasoning remains functional but less well-suited to specific task requirements.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{"Brainstorm creative names for a coffee shop"}\\
+\exbehavior{Selects creative/generative mode rather than analytical mode}\\
+\exeffect{Free-flowing creative suggestions rather than systematic analysis}
+\end{examplebox}
+
+\headfooter{\statusobs}{strategy (L), meta-reasoning (F)}
+
+%-----------------------------------------------------------------------------
+\subsubsection{(F) Meta-Reasoning Head}
+\label{head:meta-reasoning}
+
+\noindent\depthinfo{0.88--0.99} | \litnames{meta-reasoning head, meta-CoT head, reasoning-reflection head, thought-monitoring head, cognitive-oversight head, reasoning-quality head}
+
+\begin{functiondesc}
+Manages meta-level reasoning and provides highest-level monitoring of reasoning quality, strategy effectiveness, and overall response appropriateness. Monitors the quality and direction of reasoning chains, identifies when more thought is needed, and detects reasoning errors or gaps. Can insert additional reasoning steps, flag uncertain conclusions, or indicate where additional analysis would help. Operates at a level above regular chain-of-thought reasoning to ensure reasoning chains are sound and complete. Works across all reasoning types to help ensure outputs meet quality standards. Acts as cognitive oversight to help prevent confident errors in complex reasoning. Can trigger re-thinking, flag uncertain conclusions, or indicate areas needing more careful consideration. Particularly important for complex or high-stakes reasoning scenarios and for catching errors or inconsistencies that may have escaped earlier processing stages.
+\end{functiondesc}
+
+\begin{attentionbox}
+\attstrong{Reasoning quality indicators, logical gaps, uncertainty signals, reasoning chain progress, consistency checks}\\
+\attweak{Simple factual recall, non-reasoning tasks, straightforward responses}\\
+\attreacts{Complex reasoning tasks, logical steps, argument quality, reasoning errors, inconsistencies}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Reduced reasoning quality and meta-cognitive oversight. More logical gaps, less self-correction, reduced reasoning completeness. Chain-of-thought reasoning becomes less reliable, particularly for complex or multi-step problems.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{[Complex logical problem requiring multi-step reasoning]}\\
+\exbehavior{Monitors reasoning chain, detects gap: "Wait, I should verify this assumption..."}\\
+\exeffect{Improved reasoning quality through self-monitoring and error detection}
+\end{examplebox}
+
+\headfooter{\statusobs}{step-by-step (F), reasoning-mode (F), strategy (L)}
