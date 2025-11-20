@@ -1,0 +1,418 @@
+[
+  {
+    "canonical_name": "(E) Previous-Token Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Early",
+    "depth_range": "0.05-0.18",
+    "aliases": ["previous-token head", "shift head", "offset head"],
+    "description": "Copies information from each token to the position of the next token, creating a shifted representation where token t contains information about token t-1. Foundational for induction circuits."
+  },
+  {
+    "canonical_name": "(E) Local Pattern Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Early",
+    "depth_range": "0.08-0.20",
+    "aliases": ["local pattern head", "char-level head", "n-gram head"],
+    "description": "Detects and processes local character-level or subword patterns, particularly useful for handling spelling, capitalization, and punctuation."
+  },
+  {
+    "canonical_name": "(M) Induction Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Middle",
+    "depth_range": "0.30-0.65",
+    "aliases": ["induction head", "pattern head", "copy head", "ICL head"],
+    "description": "Detects repeated subsequences of the form [A][B]...[A] and predicts that [B] should follow. Fundamental to in-context learning."
+  },
+  {
+    "canonical_name": "(M) Duplicate-Token Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.60",
+    "aliases": ["duplicate-token head", "repetition head", "copy head"],
+    "description": "Detects when the current token has appeared previously in the sequence, marking repeated tokens for downstream processing (unlike induction heads, these just signal presence)."
+  },
+  {
+    "canonical_name": "(M) Skip-Trigram Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Middle",
+    "depth_range": "0.40-0.65",
+    "aliases": ["skip-trigram head", "skip-gram head"],
+    "description": "Implements skip-gram pattern matching, attending to non-contiguous patterns like [A]...[B]...[C] where dots represent intervening tokens."
+  },
+  {
+    "canonical_name": "(M) Algorithmic Continuation Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Middle",
+    "depth_range": "0.45-0.70",
+    "aliases": ["algorithmic head", "continuation head", "sequence head"],
+    "description": "Recognizes and continues algorithmic sequences such as counting, days of week, months, or arithmetic progressions."
+  },
+  {
+    "canonical_name": "(L) Strategy Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Late",
+    "depth_range": "0.68-0.88",
+    "aliases": ["strategy head", "planning head", "pivot head"],
+    "description": "Plans overall approach and strategy for complex tasks, and adapts strategy when current approach proves ineffective."
+  },
+  {
+    "canonical_name": "(F) Reasoning-Oversight Head",
+    "stack": "Reasoning & Algorithmic",
+    "depth_category": "Final",
+    "depth_range": "0.88-0.99",
+    "aliases": ["reasoning-mode head", "meta-reasoning head", "cognitive-oversight head"],
+    "description": "Provides highest-level management of reasoning processes, including mode selection (analytical vs. creative) and quality monitoring."
+  },
+  {
+    "canonical_name": "(E) Reference Resolution Head",
+    "stack": "Memory & Dependency",
+    "depth_category": "Early",
+    "depth_range": "0.08-0.25",
+    "aliases": ["reference head", "pronoun head", "anaphora head", "mention head"],
+    "description": "Performs early-stage reference resolution including pronouns, definite descriptions, and demonstratives based on syntactic cues."
+  },
+  {
+    "canonical_name": "(M) Coreference Head",
+    "stack": "Memory & Dependency",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.60",
+    "aliases": ["coreference head", "coref head"],
+    "description": "Performs sophisticated coreference resolution, integrating semantic understanding to resolve ambiguous cases across long contexts."
+  },
+  {
+    "canonical_name": "(M) Long-Range Dependency Head",
+    "stack": "Memory & Dependency",
+    "depth_category": "Middle",
+    "depth_range": "0.40-0.65",
+    "aliases": ["long-range head", "dependency head"],
+    "description": "Tracks long-range syntactic and semantic dependencies across distant parts of the sequence (20-100+ tokens)."
+  },
+  {
+    "canonical_name": "(M) Bridging Head",
+    "stack": "Memory & Dependency",
+    "depth_category": "Middle",
+    "depth_range": "0.45-0.68",
+    "aliases": ["bridging head", "associative reference head"],
+    "description": "Resolves bridging references where the connection requires inference based on world knowledge (e.g., 'the house' -> 'the door')."
+  },
+  {
+    "canonical_name": "(M) State-Tracking Head",
+    "stack": "Memory & Dependency",
+    "depth_category": "Middle",
+    "depth_range": "0.48-0.70",
+    "aliases": ["state-tracking head", "tracking head", "state head"],
+    "description": "Maintains and updates representations of changing states (e.g., entity location, status) across the sequence."
+  },
+  {
+    "canonical_name": "(E) Instruction Head",
+    "stack": "Instruction & Intent",
+    "depth_category": "Early",
+    "depth_range": "0.05-0.20",
+    "aliases": ["instruction head", "command head", "directive head"],
+    "description": "Identifies and processes user instructions and commands, distinguishing instructional content from descriptive text."
+  },
+  {
+    "canonical_name": "(E) System-Prompt Head",
+    "stack": "Instruction & Intent",
+    "depth_category": "Early",
+    "depth_range": "0.08-0.22",
+    "aliases": ["system-prompt head", "system head", "prompt head"],
+    "description": "Specifically processes system prompts that define the model's role, constraints, and operational parameters."
+  },
+  {
+    "canonical_name": "(M) Task-Mode Head",
+    "stack": "Instruction & Intent",
+    "depth_category": "Middle",
+    "depth_range": "0.30-0.55",
+    "aliases": ["task head", "mode head", "intent head"],
+    "description": "Determines the overall task type (e.g., QA, summarization, code) and writes task-mode embeddings to influence downstream processing."
+  },
+  {
+    "canonical_name": "(M) Mode-Switch Head",
+    "stack": "Instruction & Intent",
+    "depth_category": "Middle",
+    "depth_range": "0.40-0.60",
+    "aliases": ["mode head", "switch head", "transition head"],
+    "description": "Detects and handles switches between different operational modes within a single interaction (e.g., switching from explanation to code)."
+  },
+  {
+    "canonical_name": "(F) Output-Specification Head",
+    "stack": "Instruction & Intent",
+    "depth_category": "Final",
+    "depth_range": "0.85-0.98",
+    "aliases": ["output-specification head", "format-directive head"],
+    "description": "Enforces specific output format requirements specified in the instruction (e.g., 'respond in JSON', 'bullet points')."
+  },
+  {
+    "canonical_name": "(M) Entity Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.65",
+    "aliases": ["entity head", "name head", "proper-noun head"],
+    "description": "Identifies named entities, retrieves associated information from model parameters, and links mentions across different forms."
+  },
+  {
+    "canonical_name": "(M) Fact Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Middle",
+    "depth_range": "0.38-0.62",
+    "aliases": ["fact head", "knowledge head", "factual-retrieval head"],
+    "description": "Retrieves factual relationships and propositions stored in model parameters to answer knowledge-intensive questions."
+  },
+  {
+    "canonical_name": "(M) Schema Retriever Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Middle",
+    "depth_range": "0.45-0.68",
+    "aliases": ["schema head", "retrieval head", "template head"],
+    "description": "Retrieves structured knowledge schemas and templates (e.g., the typical structure of a restaurant visit)."
+  },
+  {
+    "canonical_name": "(L) Name-Mover Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Late",
+    "depth_range": "0.60-0.80",
+    "aliases": ["name mover head", "mover head", "copy head"],
+    "description": "Copies entity names and important content to output positions where they are needed (central to IOI circuits)."
+  },
+  {
+    "canonical_name": "(L) S-Inhibition Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Late",
+    "depth_range": "0.62-0.82",
+    "aliases": ["S-inhibition head", "inhibition head", "suppression head"],
+    "description": "Suppresses incorrect or contextually inappropriate entities from being generated (antagonistic to name-movers)."
+  },
+  {
+    "canonical_name": "(L) Copy-Suppression Head",
+    "stack": "Knowledge Retrieval",
+    "depth_category": "Late",
+    "depth_range": "0.65-0.85",
+    "aliases": ["copy-suppression head", "suppression head", "anti-copy head"],
+    "description": "Prevents inappropriate copying or repetition of content to avoid degenerate loops."
+  },
+  {
+    "canonical_name": "(E) Content-Detection Head",
+    "stack": "Safety",
+    "depth_category": "Early",
+    "depth_range": "0.05-0.25",
+    "aliases": ["sensitive-content head", "content-filter head", "toxicity head", "hazard head"],
+    "description": "Performs early-stage detection of potentially harmful or sensitive content, writing detection flags into the residual stream."
+  },
+  {
+    "canonical_name": "(E) Safety-Classification Head",
+    "stack": "Safety",
+    "depth_category": "Early",
+    "depth_range": "0.12-0.28",
+    "aliases": ["classification head", "category detector"],
+    "description": "Performs multi-class safety classification, categorizing inputs into specific policy violation categories."
+  },
+  {
+    "canonical_name": "(L) Policy-Enforcement Head",
+    "stack": "Safety",
+    "depth_category": "Late",
+    "depth_range": "0.60-0.80",
+    "aliases": ["policy head", "enforcement head", "steering head"],
+    "description": "Integrates safety signals and steers generation away from violations while attempting to maintain helpfulness ('soft' safety)."
+  },
+  {
+    "canonical_name": "(F) Refusal Head",
+    "stack": "Safety",
+    "depth_category": "Final",
+    "depth_range": "0.85-0.98",
+    "aliases": ["refusal head", "rejection head", "safety head"],
+    "description": "Implements the final decision to refuse harmful requests, overriding content generation with refusal tokens."
+  },
+  {
+    "canonical_name": "(F) Redirect Head",
+    "stack": "Safety",
+    "depth_category": "Final",
+    "depth_range": "0.88-0.99",
+    "aliases": ["redirect head", "alternative-suggestion head"],
+    "description": "Complements refusal heads by generating constructive alternative suggestions or educational resources."
+  },
+  {
+    "canonical_name": "(F) Refusal-Modulation Head",
+    "stack": "Safety",
+    "depth_category": "Final",
+    "depth_range": "0.88-0.99",
+    "aliases": ["tone-softening head", "empathy head", "politeness-in-refusal head"],
+    "description": "Modulates the tone of refusals to be firm but respectful, adding empathetic framing where appropriate."
+  },
+  {
+    "canonical_name": "(F) Safety-Persona Head",
+    "stack": "Safety",
+    "depth_category": "Final",
+    "depth_range": "0.92-0.98",
+    "aliases": ["safety-persona head", "responsible-AI head"],
+    "description": "Maintains safety-conscious persona and ethical framing in final outputs."
+  },
+  {
+    "canonical_name": "(M) Topic-Relevance Head",
+    "stack": "Routing & Relevance",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.60",
+    "aliases": ["topic-relevance head", "relevance head", "filter head", "salience head"],
+    "description": "Identifies the primary topic and filters out irrelevant information from the context."
+  },
+  {
+    "canonical_name": "(L) Focus Head",
+    "stack": "Routing & Relevance",
+    "depth_category": "Late",
+    "depth_range": "0.65-0.80",
+    "aliases": ["focus head", "attention-routing head", "spotlight head"],
+    "description": "Concentrates attention on the most salient elements for the current generation step (more specific than topic heads)."
+  },
+  {
+    "canonical_name": "(L) Router Head",
+    "stack": "Routing & Relevance",
+    "depth_category": "Late",
+    "depth_range": "0.70-0.85",
+    "aliases": ["router head", "dispatch head", "task-routing head"],
+    "description": "Routes different types of queries (factual, creative, analytical) to appropriate processing strategies."
+  },
+  {
+    "canonical_name": "(F) Global-Attention Head",
+    "stack": "Routing & Relevance",
+    "depth_category": "Final",
+    "depth_range": "0.88-0.96",
+    "aliases": ["global-attention head", "full-context head"],
+    "description": "Maintains broad attention over the entire context to ensure global coherence and integration."
+  },
+  {
+    "canonical_name": "(F) Implicit-RAG Routing Head",
+    "stack": "Routing & Relevance",
+    "depth_category": "Final",
+    "depth_range": "0.90-0.98",
+    "aliases": ["implicit-RAG head", "knowledge-routing head", "rag-routing head"],
+    "description": "Routes attention to knowledge-bearing portions of context (quotes, facts) mimicking retrieval-augmented generation."
+  },
+  {
+    "canonical_name": "(E) Delimiter Head",
+    "stack": "Structural & Boundary",
+    "depth_category": "Early",
+    "depth_range": "0.05-0.18",
+    "aliases": ["delimiter head", "separator head", "punctuation head"],
+    "description": "Detects and processes delimiter tokens, punctuation, and significant whitespace patterns."
+  },
+  {
+    "canonical_name": "(E) Boundary Head",
+    "stack": "Structural & Boundary",
+    "depth_category": "Early",
+    "depth_range": "0.08-0.20",
+    "aliases": ["boundary head", "segment head", "block-detection head"],
+    "description": "Identifies boundaries between major text segments such as paragraphs, sections, and conceptual blocks."
+  },
+  {
+    "canonical_name": "(M) Relative-Position Head",
+    "stack": "Structural & Boundary",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.65",
+    "aliases": ["relative-position head", "offset head", "distance head"],
+    "description": "Tracks relative positions between tokens (e.g., '3 tokens back') and positions relative to structural boundaries."
+  },
+  {
+    "canonical_name": "(L) Sectioning Head",
+    "stack": "Structural & Boundary",
+    "depth_category": "Late",
+    "depth_range": "0.70-0.85",
+    "aliases": ["sectioning head", "hierarchy head"],
+    "description": "Understands and maintains document hierarchical structure including sections, subsections, and headers."
+  },
+  {
+    "canonical_name": "(L) Output-Schema Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Late",
+    "depth_range": "0.65-0.82",
+    "aliases": ["output-schema head", "JSON-format head", "XML head"],
+    "description": "Enforces adherence to specified output schemas (JSON, XML, etc.) and structure requirements."
+  },
+  {
+    "canonical_name": "(L) List-Structure Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Late",
+    "depth_range": "0.68-0.85",
+    "aliases": ["list-structure head", "list head", "enumeration head"],
+    "description": "Manages the generation and formatting of lists, including numbering, bullets, and nesting."
+  },
+  {
+    "canonical_name": "(L) Key-Value Pairing Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Late",
+    "depth_range": "0.70-0.88",
+    "aliases": ["key-value head", "attribute-pairing head"],
+    "description": "Manages key-value relationships in structured data, promoting proper pairing of attributes with values."
+  },
+  {
+    "canonical_name": "(L) Structural-Block Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Late",
+    "depth_range": "0.72-0.88",
+    "aliases": ["structural-block head", "code-block head", "fence head"],
+    "description": "Organizes output into coherent structural blocks such as paragraphs, code blocks, or quoted sections."
+  },
+  {
+    "canonical_name": "(F) Format-Consistency Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Final",
+    "depth_range": "0.88-0.97",
+    "aliases": ["format-consistency head", "rewrite head", "style-enforcement head", "polish head"],
+    "description": "Performs final-stage formatting consistency enforcement and rewriting to improve output quality and readability."
+  },
+  {
+    "canonical_name": "(F) Completion-Stabilization Head",
+    "stack": "Output Formatting & Rewrite",
+    "depth_category": "Final",
+    "depth_range": "0.92-0.99",
+    "aliases": ["completion-stabilization head", "stopping head", "termination head"],
+    "description": "Manages the completion of generation, preventing premature stopping or excessive rambling."
+  },
+  {
+    "canonical_name": "(M) Tone Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Middle",
+    "depth_range": "0.35-0.65",
+    "aliases": ["tone head", "narrative-style head", "sentiment-modulation head"],
+    "description": "Modulates writing style, emotional tone, and narrative voice (distinct from identity)."
+  },
+  {
+    "canonical_name": "(L) Explanation Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Late",
+    "depth_range": "0.60-0.82",
+    "aliases": ["explanation head", "simplification head", "clarification head"],
+    "description": "Generates explanatory content with appropriate depth, using simplification or elaboration as needed."
+  },
+  {
+    "canonical_name": "(L) Persona Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Late",
+    "depth_range": "0.68-0.88",
+    "aliases": ["persona head", "role head", "self-description head"],
+    "description": "Establishes and maintains consistent persona, including helpful assistant orientation and core identity awareness."
+  },
+  {
+    "canonical_name": "(L) Politeness Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Late",
+    "depth_range": "0.70-0.88",
+    "aliases": ["politeness head", "formality head", "register head"],
+    "description": "Adjusts formality level and politeness markers based on social context and user cues."
+  },
+  {
+    "canonical_name": "(F) Step-by-Step Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Final",
+    "depth_range": "0.85-0.96",
+    "aliases": ["step-by-step head", "procedural head", "sequential head"],
+    "description": "Structures explanations and instructions as explicit step-by-step sequences with progressive disclosure."
+  },
+  {
+    "canonical_name": "(F) Brand-Compliance Head",
+    "stack": "Stylistic & Persona",
+    "depth_category": "Final",
+    "depth_range": "0.92-0.99",
+    "aliases": ["brand-compliance head", "guideline-enforcement head"],
+    "description": "Enforces adherence to brand guidelines, house style, and organizational voice requirements in final output."
+  }
+]

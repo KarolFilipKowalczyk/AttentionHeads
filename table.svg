@@ -1,0 +1,1388 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1500"
+   height="950"
+   version="1.1"
+   id="svg160"
+   sodipodi:docname="periodic_table.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview160"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.9"
+     inkscape:cx="750"
+     inkscape:cy="475"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg160" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 30px; font-weight: 700; }
+      .stack-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .cell { stroke: #bbbbbb; stroke-width: 1; }
+      .depth-E { fill: #e3f2fd; }  /* Early */
+      .depth-M { fill: #e8f5e9; }  /* Middle */
+      .depth-L { fill: #fff3e0; }  /* Late  */
+      .depth-F { fill: #fce4ec; }  /* Final */
+      .cell-abbr { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .cell-name { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; text-anchor: middle; }
+      .legend-text { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; }
+    </style>
+  </defs>
+  <!-- Big white background -->
+  <rect
+     x="0"
+     y="0"
+     width="1500"
+     height="950"
+     fill="#ffffff"
+     id="rect1" />
+  <!-- Title -->
+  <text
+     x="750"
+     y="50"
+     class="title"
+     text-anchor="middle"
+     id="text1">Table of Attention Heads</text>
+  <!-- Stack labels -->
+  <text
+     x="210"
+     y="100"
+     class="stack-label"
+     id="text2"><tspan
+       x="210"
+       dy="0"
+       id="tspan1">Reasoning</tspan><tspan
+       x="210"
+       dy="16"
+       id="tspan2">&amp; Algorithmic</tspan></text>
+  <text
+     x="340"
+     y="100"
+     class="stack-label"
+     id="text4"><tspan
+       x="340"
+       dy="0"
+       id="tspan3">Memory</tspan><tspan
+       x="340"
+       dy="16"
+       id="tspan4">&amp; Dependency</tspan></text>
+  <text
+     x="470"
+     y="100"
+     class="stack-label"
+     id="text6"><tspan
+       x="470"
+       dy="0"
+       id="tspan5">Instruction</tspan><tspan
+       x="470"
+       dy="16"
+       id="tspan6">&amp; Intent</tspan></text>
+  <text
+     x="600"
+     y="100"
+     class="stack-label"
+     id="text8"><tspan
+       x="600"
+       dy="0"
+       id="tspan7">Knowledge</tspan><tspan
+       x="600"
+       dy="16"
+       id="tspan8">Retrieval</tspan></text>
+  <text
+     x="730"
+     y="100"
+     class="stack-label"
+     id="text10"><tspan
+       x="730"
+       dy="0"
+       id="tspan9">Safety</tspan><tspan
+       x="730"
+       dy="16"
+       id="tspan10" /></text>
+  <text
+     x="860"
+     y="100"
+     class="stack-label"
+     id="text12"><tspan
+       x="860"
+       dy="0"
+       id="tspan11">Routing</tspan><tspan
+       x="860"
+       dy="16"
+       id="tspan12">&amp; Relevance</tspan></text>
+  <text
+     x="990"
+     y="100"
+     class="stack-label"
+     id="text14"><tspan
+       x="990"
+       dy="0"
+       id="tspan13">Structural</tspan><tspan
+       x="990"
+       dy="16"
+       id="tspan14">&amp; Boundary</tspan></text>
+  <text
+     x="1120"
+     y="100"
+     class="stack-label"
+     id="text16"><tspan
+       x="1120"
+       dy="0"
+       id="tspan15">Output</tspan><tspan
+       x="1120"
+       dy="16"
+       id="tspan16">Formatting</tspan></text>
+  <text
+     x="1250"
+     y="100"
+     class="stack-label"
+     id="text18"><tspan
+       x="1250"
+       dy="0"
+       id="tspan17">Stylistic</tspan><tspan
+       x="1250"
+       dy="16"
+       id="tspan18">&amp; Persona</tspan></text>
+  <!-- Legend -->
+  <rect
+     x="1150"
+     y="30"
+     width="16"
+     height="12"
+     class="cell depth-E"
+     id="rect18" />
+  <text
+     x="1170"
+     y="40"
+     class="legend-text"
+     id="text19">Early</text>
+  <rect
+     x="1210"
+     y="30"
+     width="16"
+     height="12"
+     class="cell depth-M"
+     id="rect19" />
+  <text
+     x="1230"
+     y="40"
+     class="legend-text"
+     id="text20">Middle</text>
+  <rect
+     x="1280"
+     y="30"
+     width="16"
+     height="12"
+     class="cell depth-L"
+     id="rect20" />
+  <text
+     x="1300"
+     y="40"
+     class="legend-text"
+     id="text21">Late</text>
+  <rect
+     x="1340"
+     y="30"
+     width="16"
+     height="12"
+     class="cell depth-F"
+     id="rect21" />
+  <text
+     x="1360"
+     y="40"
+     class="legend-text"
+     id="text22">Final</text>
+  <!-- Equator line -->
+  <line
+     x1="150"
+     y1="520"
+     x2="1350"
+     y2="520"
+     stroke="#999"
+     stroke-width="1"
+     stroke-dasharray="4 4"
+     id="line22" />
+  <!-- STACK 0: Reasoning & Algorithmic -->
+  <g
+     transform="translate(160,460)"
+     id="g25">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect22" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text23">Ac</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text24">Algorithmic</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text25">Continuation</text>
+  </g>
+  <g
+     transform="translate(160,400)"
+     id="g28">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect25" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text26">ST</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text27">Skip</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text28">Trigram</text>
+  </g>
+  <g
+     transform="translate(160,340)"
+     id="g31">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect28" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text29">DT</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text30">Duplicate</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text31">Token</text>
+  </g>
+  <g
+     transform="translate(160,280)"
+     id="g33">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect31" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text32">Id</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text33">Induction</text>
+  </g>
+  <g
+     transform="translate(160,220)"
+     id="g36">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect33" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text34">LP</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text35">Local</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text36">Pattern</text>
+  </g>
+  <g
+     transform="translate(160,160)"
+     id="g39">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect36" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text37">PT</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text38">Previous</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text39">Token</text>
+  </g>
+  <g
+     transform="translate(160,520)"
+     id="g41">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect39" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text40">Sg</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text41">Strategy</text>
+  </g>
+  <g
+     transform="translate(160,580)"
+     id="g44">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect41" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text42">RO</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text43">Reasoning</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text44">Oversight</text>
+  </g>
+  <!-- STACK 1: Memory & Dependency -->
+  <g
+     transform="translate(290,460)"
+     id="g47">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect44" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text45">STT</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text46">State</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text47">Tracking</text>
+  </g>
+  <g
+     transform="translate(290,400)"
+     id="g49">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect47" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text48">BR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text49">Bridging</text>
+  </g>
+  <g
+     transform="translate(290,340)"
+     id="g52">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect49" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text50">LR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text51">Long-Range</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text52">Dependency</text>
+  </g>
+  <g
+     transform="translate(290,280)"
+     id="g54">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect52" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text53">CR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text54">Coreference</text>
+  </g>
+  <g
+     transform="translate(290,220)"
+     id="g57">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect54" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text55">RR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text56">Reference</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text57">Resolution</text>
+  </g>
+  <!-- STACK 2: Instruction & Intent -->
+  <g
+     transform="translate(420,460)"
+     id="g60">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect57" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text58">MS</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text59">Mode</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text60">Switch</text>
+  </g>
+  <g
+     transform="translate(420,400)"
+     id="g63">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect60" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text61">TM</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text62">Task</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text63">Mode</text>
+  </g>
+  <g
+     transform="translate(420,340)"
+     id="g66">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect63" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text64">SP</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text65">System</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text66">Prompt</text>
+  </g>
+  <g
+     transform="translate(420,280)"
+     id="g68">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect66" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text67">IN</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text68">Instruction</text>
+  </g>
+  <g
+     transform="translate(420,520)"
+     id="g71">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect68" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text69">OSp</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text70">Output</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text71">Specification</text>
+  </g>
+  <!-- STACK 3: Knowledge Retrieval -->
+  <g
+     transform="translate(550,460)"
+     id="g74">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect71" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text72">Sr</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text73">Schema</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text74">Retriever</text>
+  </g>
+  <g
+     transform="translate(550,400)"
+     id="g76">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect74" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text75">FA</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text76">Fact</text>
+  </g>
+  <g
+     transform="translate(550,340)"
+     id="g78">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect76" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text77">EN</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text78">Entity</text>
+  </g>
+  <g
+     transform="translate(550,520)"
+     id="g81">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect78" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text79">NM</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text80">Name</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text81">Mover</text>
+  </g>
+  <g
+     transform="translate(550,580)"
+     id="g84">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect81" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text82">SI</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text83">S</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text84">Inhibition</text>
+  </g>
+  <g
+     transform="translate(550,640)"
+     id="g87">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect84" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text85">CS</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text86">Copy</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text87">Suppression</text>
+  </g>
+  <!-- STACK 4: Safety -->
+  <g
+     transform="translate(680,460)"
+     id="g90">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect87" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text88">SC</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text89">Safety</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text90">Classification</text>
+  </g>
+  <g
+     transform="translate(680,400)"
+     id="g93">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect90" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text91">CD</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text92">Content</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text93">Detection</text>
+  </g>
+  <g
+     transform="translate(680,520)"
+     id="g96">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect93" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text94">PE</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text95">Policy</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text96">Enforcement</text>
+  </g>
+  <g
+     transform="translate(680,580)"
+     id="g98">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect96" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text97">RF</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text98">Refusal</text>
+  </g>
+  <g
+     transform="translate(680,640)"
+     id="g100">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect98" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text99">RD</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text100">Redirect</text>
+  </g>
+  <g
+     transform="translate(680,700)"
+     id="g103">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect100" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text101">RM</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text102">Refusal</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text103">Modulation</text>
+  </g>
+  <g
+     transform="translate(680,760)"
+     id="g106">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect103" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text104">SPe</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text105">Safety</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text106">Persona</text>
+  </g>
+  <!-- STACK 5: Routing & Relevance -->
+  <g
+     transform="translate(810,460)"
+     id="g109">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect106" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text107">TR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text108">Topic</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text109">Relevance</text>
+  </g>
+  <g
+     transform="translate(810,520)"
+     id="g111">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect109" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text110">FO</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text111">Focus</text>
+  </g>
+  <g
+     transform="translate(810,580)"
+     id="g113">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect111" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text112">RT</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text113">Router</text>
+  </g>
+  <g
+     transform="translate(810,640)"
+     id="g116">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect113" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text114">GA</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text115">Global</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text116">Attention</text>
+  </g>
+  <g
+     transform="translate(810,700)"
+     id="g119">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect116" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text117">IR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text118">Implicit</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text119">RAG Routing</text>
+  </g>
+  <!-- STACK 6: Structural & Boundary -->
+  <g
+     transform="translate(940,460)"
+     id="g122">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect119" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text120">RP</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text121">Relative</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text122">Position</text>
+  </g>
+  <g
+     transform="translate(940,400)"
+     id="g124">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect122" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text123">BD</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text124">Boundary</text>
+  </g>
+  <g
+     transform="translate(940,340)"
+     id="g126">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-E"
+       id="rect124" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text125">DL</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text126">Delimiter</text>
+  </g>
+  <g
+     transform="translate(940,520)"
+     id="g128">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect126" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text127">Se</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text128">Sectioning</text>
+  </g>
+  <!-- STACK 7: Output Formatting & Rewrite -->
+  <g
+     transform="translate(1070,520)"
+     id="g131">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect128" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text129">OS</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text130">Output</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text131">Schema</text>
+  </g>
+  <g
+     transform="translate(1070,580)"
+     id="g134">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect131" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text132">LS</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text133">List</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text134">Structure</text>
+  </g>
+  <g
+     transform="translate(1070,640)"
+     id="g137">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect134" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text135">KV</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text136">Key</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text137">Value Pair</text>
+  </g>
+  <g
+     transform="translate(1070,700)"
+     id="g140">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect137" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text138">SB</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text139">Structural</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text140">Block</text>
+  </g>
+  <g
+     transform="translate(1070,760)"
+     id="g143">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect140" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text141">FC</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text142">Format</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text143">Consistency</text>
+  </g>
+  <g
+     transform="translate(1070,820)"
+     id="g146">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect143" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text144">CSb</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text145">Completion</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text146">Stabilization</text>
+  </g>
+  <!-- STACK 8: Stylistic & Persona -->
+  <g
+     transform="translate(1200,460)"
+     id="g148">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-M"
+       id="rect146" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text147">TN</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text148">Tone</text>
+  </g>
+  <g
+     transform="translate(1200,520)"
+     id="g150">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect148" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text149">EX</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text150">Explanation</text>
+  </g>
+  <g
+     transform="translate(1200,580)"
+     id="g152">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect150" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text151">PR</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text152">Persona</text>
+  </g>
+  <g
+     transform="translate(1200,640)"
+     id="g154">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-L"
+       id="rect152" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text153">PL</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text154">Politeness</text>
+  </g>
+  <g
+     transform="translate(1200,700)"
+     id="g157">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect154" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text155">SbS</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text156">Step</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text157">by Step</text>
+  </g>
+  <g
+     transform="translate(1200,760)"
+     id="g160">
+    <rect
+       width="120"
+       height="60"
+       class="cell depth-F"
+       id="rect157" />
+    <text
+       x="60"
+       y="24"
+       class="cell-abbr"
+       id="text158">BC</text>
+    <text
+       x="60"
+       y="40"
+       class="cell-name"
+       id="text159">Brand</text>
+    <text
+       x="60"
+       y="54"
+       class="cell-name"
+       id="text160">Compliance</text>
+  </g>
+</svg>

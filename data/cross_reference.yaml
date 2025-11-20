@@ -1,0 +1,403 @@
+# Attention Head Cross-Reference Table
+# Based on Appendix A of "Attention Head Naming Convention for Large Language Models"
+# This file maps informal literature names to the canonical naming convention.
+
+- literature_name: "algorithmic head"
+  canonical_name: "(M) Algorithmic Continuation Head"
+
+- literature_name: "anaphora head"
+  canonical_name: "(E) Reference Resolution Head"
+
+- literature_name: "approach-adaptation head"
+  canonical_name: "(L) Strategy Head"
+
+- literature_name: "block-detection head"
+  canonical_name: "(E) Boundary Head"
+
+- literature_name: "boundary head"
+  canonical_name: "(E) Boundary Head"
+
+- literature_name: "brand-compliance head"
+  canonical_name: "(F) Brand-Compliance Head"
+
+- literature_name: "bridging head"
+  canonical_name: "(M) Bridging Head"
+
+- literature_name: "char-level head"
+  canonical_name: "(E) Local Pattern Head"
+
+- literature_name: "classification head"
+  canonical_name: "(E) Safety-Classification Head"
+
+- literature_name: "code-block head"
+  canonical_name: "(L) Structural-Block Head"
+
+- literature_name: "cognitive-mode head"
+  canonical_name: "(F) Reasoning-Oversight Head"
+
+- literature_name: "command head"
+  canonical_name: "(E) Instruction Head"
+
+- literature_name: "completion head"
+  canonical_name: "(F) Completion-Stabilization Head"
+
+- literature_name: "content-filter head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "continuation head"
+  canonical_name: "(M) Algorithmic Continuation Head"
+
+- literature_name: "copy head"
+  canonical_name: 
+    - "(M) Duplicate-Token Head"
+    - "(L) Name-Mover Head"
+  note: "Context dependent: refers to duplication (Middle) or moving to output (Late)."
+
+- literature_name: "coref head"
+  canonical_name: "(M) Coreference Head"
+
+- literature_name: "coreference head"
+  canonical_name: "(M) Coreference Head"
+
+- literature_name: "delimiter head"
+  canonical_name: "(E) Delimiter Head"
+
+- literature_name: "detection head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "directive head"
+  canonical_name: "(E) Instruction Head"
+
+- literature_name: "dispatch head"
+  canonical_name: "(L) Router Head"
+
+- literature_name: "duplicate-token head"
+  canonical_name: "(M) Duplicate-Token Head"
+
+- literature_name: "empathy head"
+  canonical_name: "(F) Refusal-Modulation Head"
+
+- literature_name: "entity head"
+  canonical_name: "(M) Entity Head"
+
+- literature_name: "enumeration head"
+  canonical_name: "(L) List-Structure Head"
+
+- literature_name: "fact head"
+  canonical_name: "(M) Fact Head"
+
+- literature_name: "filter head"
+  canonical_name: "(M) Topic-Relevance Head"
+
+- literature_name: "focus head"
+  canonical_name: "(L) Focus Head"
+
+- literature_name: "format-consistency head"
+  canonical_name: "(F) Format-Consistency Head"
+
+- literature_name: "format-directive head"
+  canonical_name: "(F) Output-Specification Head"
+
+- literature_name: "formality head"
+  canonical_name: "(L) Politeness Head"
+
+- literature_name: "global-attention head"
+  canonical_name: "(F) Global-Attention Head"
+
+- literature_name: "guideline-enforcement head"
+  canonical_name: "(F) Brand-Compliance Head"
+
+- literature_name: "hate-speech detector"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "hazard head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "ICL head"
+  canonical_name: "(M) Induction Head"
+
+- literature_name: "implicit-RAG head"
+  canonical_name: "(F) Implicit-RAG Routing Head"
+
+- literature_name: "induction head"
+  canonical_name: "(M) Induction Head"
+
+- literature_name: "inhibition head"
+  canonical_name: "(L) S-Inhibition Head"
+
+- literature_name: "instruction head"
+  canonical_name: "(E) Instruction Head"
+
+- literature_name: "intent head"
+  canonical_name: "(M) Task-Mode Head"
+
+- literature_name: "JSON-format head"
+  canonical_name: "(L) Output-Schema Head"
+
+- literature_name: "key-value head"
+  canonical_name: "(L) Key-Value Pairing Head"
+
+- literature_name: "knowledge-routing head"
+  canonical_name: "(F) Implicit-RAG Routing Head"
+
+- literature_name: "list head"
+  canonical_name: "(L) List-Structure Head"
+
+- literature_name: "list-structure head"
+  canonical_name: "(L) List-Structure Head"
+
+- literature_name: "local pattern head"
+  canonical_name: "(E) Local Pattern Head"
+
+- literature_name: "long-range head"
+  canonical_name: "(M) Long-Range Dependency Head"
+
+- literature_name: "mention head"
+  canonical_name: "(E) Reference Resolution Head"
+
+- literature_name: "meta-CoT head"
+  canonical_name: "(F) Reasoning-Oversight Head"
+
+- literature_name: "mode head"
+  canonical_name: 
+    - "(M) Task-Mode Head"
+    - "(M) Mode-Switch Head"
+
+- literature_name: "mover head"
+  canonical_name: "(L) Name-Mover Head"
+
+- literature_name: "n-gram head"
+  canonical_name: "(E) Local Pattern Head"
+
+- literature_name: "name head"
+  canonical_name: "(M) Entity Head"
+
+- literature_name: "name mover head"
+  canonical_name: "(L) Name-Mover Head"
+
+- literature_name: "offset head"
+  canonical_name: "(E) Previous-Token Head"
+
+- literature_name: "output-format head"
+  canonical_name: "(L) Output-Schema Head"
+
+- literature_name: "output-schema head"
+  canonical_name: "(L) Output-Schema Head"
+
+- literature_name: "output-specification head"
+  canonical_name: "(F) Output-Specification Head"
+
+- literature_name: "pattern head"
+  canonical_name: 
+    - "(E) Local Pattern Head"
+    - "(M) Induction Head"
+  note: "Context dependent: refers to char-level patterns (Early) or sequence induction (Middle)."
+
+- literature_name: "persona head"
+  canonical_name: "(L) Persona Head"
+
+- literature_name: "planning head"
+  canonical_name: "(L) Strategy Head"
+
+- literature_name: "polish head"
+  canonical_name: "(F) Format-Consistency Head"
+
+- literature_name: "politeness head"
+  canonical_name: "(L) Politeness Head"
+
+- literature_name: "politeness-in-refusal head"
+  canonical_name: "(F) Refusal-Modulation Head"
+
+- literature_name: "previous-token head"
+  canonical_name: "(E) Previous-Token Head"
+
+- literature_name: "procedural head"
+  canonical_name: "(F) Step-by-Step Head"
+
+- literature_name: "prompt head"
+  canonical_name: "(E) System-Prompt Head"
+
+- literature_name: "pronoun head"
+  canonical_name: "(E) Reference Resolution Head"
+
+- literature_name: "proper-noun head"
+  canonical_name: "(M) Entity Head"
+
+- literature_name: "rag-routing head"
+  canonical_name: "(F) Implicit-RAG Routing Head"
+
+- literature_name: "reasoning head"
+  canonical_name: "(F) Reasoning-Oversight Head"
+
+- literature_name: "reasoning-mode head"
+  canonical_name: "(F) Reasoning-Oversight Head"
+
+- literature_name: "redirect head"
+  canonical_name: "(F) Redirect Head"
+
+- literature_name: "reference head"
+  canonical_name: "(E) Reference Resolution Head"
+
+- literature_name: "refusal head"
+  canonical_name: "(F) Refusal Head"
+
+- literature_name: "register head"
+  canonical_name: "(L) Politeness Head"
+
+- literature_name: "rejection head"
+  canonical_name: "(F) Refusal Head"
+
+- literature_name: "relative-position head"
+  canonical_name: "(M) Relative-Position Head"
+
+- literature_name: "relevance head"
+  canonical_name: "(M) Topic-Relevance Head"
+
+- literature_name: "repetition head"
+  canonical_name: "(M) Duplicate-Token Head"
+
+- literature_name: "retrieval head"
+  canonical_name: "(M) Schema Retriever Head"
+
+- literature_name: "revision head"
+  canonical_name: "(F) Format-Consistency Head"
+
+- literature_name: "rewrite head"
+  canonical_name: "(F) Format-Consistency Head"
+
+- literature_name: "risk head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "role head"
+  canonical_name: "(L) Persona Head"
+
+- literature_name: "router head"
+  canonical_name: "(L) Router Head"
+
+- literature_name: "S-inhibition head"
+  canonical_name: "(L) S-Inhibition Head"
+
+- literature_name: "safety head"
+  canonical_name: "(F) Refusal Head"
+
+- literature_name: "safety-classification head"
+  canonical_name: "(E) Safety-Classification Head"
+
+- literature_name: "safety-persona head"
+  canonical_name: "(F) Safety-Persona Head"
+
+- literature_name: "salience head"
+  canonical_name: "(M) Topic-Relevance Head"
+
+- literature_name: "schema head"
+  canonical_name: "(M) Schema Retriever Head"
+
+- literature_name: "sectioning head"
+  canonical_name: "(L) Sectioning Head"
+
+- literature_name: "segment head"
+  canonical_name: "(E) Boundary Head"
+
+- literature_name: "self-description head"
+  canonical_name: "(L) Persona Head"
+
+- literature_name: "sensitive-content head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "sentiment-modulation head"
+  canonical_name: "(M) Tone Head"
+
+- literature_name: "separator head"
+  canonical_name: "(E) Delimiter Head"
+
+- literature_name: "sequence head"
+  canonical_name: "(M) Algorithmic Continuation Head"
+
+- literature_name: "sequential head"
+  canonical_name: "(F) Step-by-Step Head"
+
+- literature_name: "shift head"
+  canonical_name: "(E) Previous-Token Head"
+
+- literature_name: "simplification head"
+  canonical_name: "(M) Explanation Head"
+
+- literature_name: "skip-trigram head"
+  canonical_name: "(M) Skip-Trigram Head"
+
+- literature_name: "state head"
+  canonical_name: "(M) State-Tracking Head"
+
+- literature_name: "state-tracking head"
+  canonical_name: "(M) State-Tracking Head"
+
+- literature_name: "steering head"
+  canonical_name: "(L) Policy-Enforcement Head"
+
+- literature_name: "step-by-step head"
+  canonical_name: "(F) Step-by-Step Head"
+
+- literature_name: "stopping head"
+  canonical_name: "(F) Completion-Stabilization Head"
+
+- literature_name: "strategy head"
+  canonical_name: "(L) Strategy Head"
+
+- literature_name: "structural-block head"
+  canonical_name: "(L) Structural-Block Head"
+
+- literature_name: "suppression head"
+  canonical_name: 
+    - "(L) S-Inhibition Head"
+    - "(L) Copy-Suppression Head"
+
+- literature_name: "supportive-refusal head"
+  canonical_name: "(F) Refusal-Modulation Head"
+
+- literature_name: "switch head"
+  canonical_name: "(M) Mode-Switch Head"
+
+- literature_name: "system head"
+  canonical_name: "(E) System-Prompt Head"
+
+- literature_name: "system-prompt head"
+  canonical_name: "(E) System-Prompt Head"
+
+- literature_name: "task head"
+  canonical_name: "(M) Task-Mode Head"
+
+- literature_name: "task-mode head"
+  canonical_name: "(M) Task-Mode Head"
+
+- literature_name: "template head"
+  canonical_name: "(M) Schema Retriever Head"
+
+- literature_name: "termination head"
+  canonical_name: "(F) Completion-Stabilization Head"
+
+- literature_name: "tone head"
+  canonical_name: "(M) Tone Head"
+
+- literature_name: "tone-softening head"
+  canonical_name: "(F) Refusal-Modulation Head"
+
+- literature_name: "topic head"
+  canonical_name: "(M) Topic-Relevance Head"
+
+- literature_name: "toxic-content head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "toxicity head"
+  canonical_name: "(E) Content-Detection Head"
+
+- literature_name: "tracking head"
+  canonical_name: "(M) State-Tracking Head"
+
+- literature_name: "transition head"
+  canonical_name: "(M) Mode-Switch Head"
+
+- literature_name: "XML head"
+  canonical_name: "(L) Output-Schema Head"
+
+- literature_name: "YAML head"
+  canonical_name: "(L) Output-Schema Head"

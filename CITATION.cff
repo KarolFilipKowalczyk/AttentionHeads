@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this naming convention in your research, please cite the catalog using the BibTeX entry below."
+title: "Attention Head Naming Convention for Large Language Models (LLMs)"
+version: "1.0.0"
+date-released: 2025-11-20
+authors:
+  - given-names: Karol
+    family-names: Kowalczyk
+repository-code: "https://github.com/KarolFilipKowalczyk/attention-head-taxonomy"
+keywords:
+  - mechanistic interpretability
+  - transformer circuits
+  - attention heads
+  - large language models
+  - taxonomy
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.xxxxxxxx" # REPLACE with your Zenodo DOI after upload
+    description: "The official persistent identifier for this version."
+preferred-citation:
+  type: article
+  authors:
+    - given-names: Karol
+      family-names: Kowalczyk
+  title: "Attention Head Naming Convention for Large Language Models (LLMs)"
+  date-published: 2025-11-20
+  version: "1.0.0"
+  notes: "Pre-print, available as a Community Resource."
