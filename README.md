@@ -23,7 +23,7 @@ This project proposes a unified taxonomy consisting of:
 
 Heads are organized into functional stacks. Within each stack, heads are ordered by depth (`Early -> Middle -> Late -> Final`).
 
-![Table of Attention Heads](./table.png)
+![Table of Attention Heads](./paper/table.png)
 
 | Stack Name | Core Function | Examples |
 | :--- | :--- | :--- |
