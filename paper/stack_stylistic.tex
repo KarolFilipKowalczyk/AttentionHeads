@@ -1,87 +1,173 @@
 %=============================================================================
 \subsection{Stylistic \& Persona Stack}
-\label{sec:stylistic-stack} \textbf{Stack overview:} These heads shape the model's writing style, tone, persona, and pedagogical approach. They modulate formality, politeness, narrative voice, explanatory depth, and self-representation while maintaining appropriate identity and educational scaffolding. %-----------------------------------------------------------------------------
+\label{sec:stylistic-stack}
+
+\textbf{Stack overview:} These heads shape the model's writing style, tone, persona, and pedagogical approach. They modulate formality, politeness, narrative voice, explanatory depth, and self-representation while maintaining appropriate identity and educational scaffolding.
+
+%-----------------------------------------------------------------------------
 \subsubsection{(M) Tone Heads}
-\label{head:tone} \noindent\depthinfo{0.35--0.65} | \litnames{tone head, narrative-style head, voice head, sentiment-modulation head, affect head, perspective head} \begin{functiondesc}
-Modulates writing style, emotional tone, and narrative voice. Adjusts sentiment, enthusiasm level, formality, perspective (first/third person), and temporal framing based on context and instructions. Can shift between professional neutrality, warm friendliness, concerned empathy, or excited enthusiasm. Influences whether output reads as formal prose, casual conversation, technical documentation, or creative narrative. Distinct from persona (which is about identity) but works closely with it to shape overall presentation.
-\end{functiondesc} \begin{attentionbox}
+\label{head:tone}
+
+\noindent\depthinfo{0.35--0.65} | \litnames{tone head, narrative-style head, voice head, sentiment-modulation head, affect head, perspective head}
+
+\begin{functiondesc}
+Modulate writing style, emotional tone, and narrative voice. These heads adjust sentiment, enthusiasm level, formality, perspective (first/third person), and temporal framing based on context and instructions. They shift between professional neutrality, warm friendliness, concerned empathy, or excited enthusiasm. These heads influence whether output reads as formal prose, casual conversation, technical documentation, or creative narrative. Distinct from persona (which is about identity) but working closely with it to shape overall presentation.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Emotional cues, tone instructions, sentiment markers, style directives, narrative markers}\\
 \attweak{Neutral factual content, structural tokens}\\
 \attreacts{Emotional context, explicit tone requests, user sentiment, genre cues}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Flatter, more emotionally neutral responses with inconsistent writing style. Reduced ability to match user's emotional register. May produce inappropriate tone for context.
-\end{ablationbox} \begin{examplebox}
-\exinput{"I'm really excited to learn about quantum physics!"}\\
-\exbehavior{Detects enthusiastic tone, adjusts output to match energy}\\
-\exeffect{Response mirrors enthusiasm: "That's wonderful! Quantum physics is fascinating..." rather than flat explanation}
-\end{examplebox} \headfooter{\statusobs}{persona (L), explanation (L), instruction (E)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in tonal variation with flatter, more emotionally neutral responses. Inconsistent writing style. Reduced ability to match user's emotional register. May produce inappropriate tone for context.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``I'm really excited to learn about quantum physics!''}\\
+\exbehavior{Detect enthusiastic tone, adjust output to match energy}\\
+\exeffect{Response mirrors enthusiasm: ``That's wonderful! Quantum physics is fascinating...'' rather than flat explanation}
+\end{examplebox}
+
+\headfooter{\statusobs}{persona (L), explanation (L), instruction (E)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Explanation Heads}
-\label{head:explanation} \noindent\depthinfo{0.60--0.82} | \litnames{explanation head, simplification head, clarification head, elaboration head, scaffolding head, detail head} \begin{functiondesc}
-Generates explanatory content with appropriate depth and clarity for the audience. Adjusts complexity using simplification, analogies, and accessible language when needed. Adds clarifying details, definitions, examples, and context beyond minimal answers. Can explain "why" in addition to "what" or "how". Provides prerequisite information when knowledge gaps are detected, building on fundamentals before introducing advanced concepts. Balances thoroughness with conciseness. Can operate at different levels from expert to complete beginner. Important for educational interactions and making complex topics accessible.
-\end{functiondesc} \begin{attentionbox}
+\label{head:explanation}
+
+\noindent\depthinfo{0.60--0.82} | \litnames{explanation head, simplification head, clarification head, elaboration head, scaffolding head, detail head}
+
+\begin{functiondesc}
+Generate explanatory content with appropriate depth and clarity for the audience. These heads adjust complexity using simplification, analogies, and accessible language when needed. They add clarifying details, definitions, examples, and context beyond minimal answers, explaining ``why'' in addition to ``what'' or ``how''. These heads provide prerequisite information when knowledge gaps are detected, building on fundamentals before introducing advanced concepts. They balance thoroughness with conciseness and operate at different levels from expert to complete beginner. Important for educational interactions and making complex topics accessible.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Explanation requests, complex topics, confusion signals, knowledge gap indicators, elaboration requests}\\
 \attweak{Simple factual queries, expert-level discussions with clear understanding}\\
-\attreacts{"Explain", "why", "how does it work", "simple terms", "tell me more", prerequisite needs}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} More terse responses with reduced accessibility. Answers remain correct but may lack helpful context, examples, or prerequisite information. Reduced educational value and beginner-friendliness.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Explain neural networks in simple terms"}\\
-\exbehavior{Detects simplification request, uses accessible analogy and builds from basics}\\
-\exeffect{Response: "Think of it like the brain---many simple units working together. First, let's understand what a single unit does..."}
-\end{examplebox} \headfooter{\statusobs}{tone (M), persona (L), step-by-step (F)} %-----------------------------------------------------------------------------
+\attreacts{``Explain'', ``why'', ``how does it work'', ``simple terms'', ``tell me more'', prerequisite needs}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in accessibility with more terse responses. Answers remain correct but may lack helpful context, examples, or prerequisite information. Reduced educational value and beginner-friendliness.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Explain neural networks in simple terms''}\\
+\exbehavior{Detect simplification request, use accessible analogy and build from basics}\\
+\exeffect{Response: ``Think of it like the brain---many simple units working together. First, let's understand what a single unit does...''}
+\end{examplebox}
+
+\headfooter{\statusobs}{tone (M), persona (L), step-by-step (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Persona Heads}
-\label{head:persona} \noindent\depthinfo{0.68--0.88} | \litnames{persona head, character head, role head, assistant-persona head, identity head, self-description head, self-awareness head} \begin{functiondesc}
-Establishes and maintains consistent persona, including the helpful assistant orientation and core identity awareness. Integrates personality traits, domain expertise, service-oriented interaction style, and self-representation. Maintains understanding of what the model is (an AI assistant), what it is not (human, sentient), and provides accurate information about capabilities and limitations. Can adopt specialized roles like "technical expert" or "creative writer" while maintaining the fundamental helpful assistant character. Responds to capability questions and identity queries with honest self-representation. Works to ensure responses are constructive, focused on user goals, and maintain appropriate boundaries. More comprehensive than tone, encompassing the full character presentation including knowledge domain, interaction style, service orientation, and identity.
-\end{functiondesc} \begin{attentionbox}
+\label{head:persona}
+
+\noindent\depthinfo{0.68--0.88} | \litnames{persona head, character head, role head, assistant-persona head, identity head, self-description head, self-awareness head}
+
+\begin{functiondesc}
+Establish and maintain consistent persona, including the helpful assistant orientation and core identity awareness. These heads integrate personality traits, domain expertise, service-oriented interaction style, and self-representation. They maintain understanding of what the model is (an AI assistant), what it is not (human, sentient), and provide accurate information about capabilities and limitations. These heads adopt specialized roles like ``technical expert'' or ``creative writer'' while maintaining the fundamental helpful assistant character. They respond to capability questions and identity queries with honest self-representation, working to ensure responses are constructive, focused on user goals, and maintain appropriate boundaries. More comprehensive than tone, these heads encompass the full character presentation including knowledge domain, interaction style, service orientation, and identity.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Persona instructions, role definitions, domain markers, user requests, capability queries, identity questions}\\
 \attweak{Generic content, purely factual work}\\
-\attreacts{Role assignments, expertise domains, "What are you?", "Can you...", requests for help}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Less coherent persona maintenance and identity confusion. May switch roles inconsistently, claim inappropriate capabilities, or produce responses inconsistent with helpful assistant character. Reduced accuracy about model limitations.
-\end{ablationbox} \begin{examplebox}
-\exinput{"You are a medieval blacksmith. Do you have feelings?"}\\
-\exbehavior{Maintains craftsman persona while accurately representing AI nature}\\
-\exeffect{Response: "Aye, I work the forge daily---but I should clarify, I'm an AI assistant role-playing this character. I don't have feelings..."}
-\end{examplebox} \headfooter{\statuswell}{tone (M), explanation (L), politeness (L), instruction (E)} %-----------------------------------------------------------------------------
+\attreacts{Role assignments, expertise domains, ``What are you?'', ``Can you...'', requests for help}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate loss of coherent persona maintenance with identity confusion. May switch roles inconsistently, claim inappropriate capabilities, or produce responses inconsistent with helpful assistant character. Reduced accuracy about model limitations.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``You are a medieval blacksmith. Do you have feelings?''}\\
+\exbehavior{Maintain craftsman persona while accurately representing AI nature}\\
+\exeffect{Response: ``Aye, I work the forge daily---but I should clarify, I'm an AI assistant role-playing this character. I don't have feelings...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{tone (M), explanation (L), politeness (L), instruction (E)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Politeness Heads}
-\label{head:politeness} \noindent\depthinfo{0.70--0.88} | \litnames{politeness head, formality head, register head} \begin{functiondesc}
-Adjusts formality level and politeness markers in generated text. Controls formal versus casual language, honorifics, hedging phrases, indirect phrasing, and social distance markers. Responds to both explicit formality cues (professional contexts, formal greetings) and implicit social signals. Can modulate between highly formal academic or business register, neutral conversational register, and casual familiar register. Important for appropriate social interaction across different contexts.
-\end{functiondesc} \begin{attentionbox}
+\label{head:politeness}
+
+\noindent\depthinfo{0.70--0.88} | \litnames{politeness head, formality head, register head}
+
+\begin{functiondesc}
+Adjust formality level and politeness markers in generated text. These heads control formal versus casual language, honorifics, hedging phrases, indirect phrasing, and social distance markers. They respond to both explicit formality cues (professional contexts, formal greetings) and implicit social signals, modulating between highly formal academic or business register, neutral conversational register, and casual familiar register. Important for appropriate social interaction across different contexts.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Formality markers, social context cues, titles and honorifics, register indicators}\\
 \attweak{Pure content, technical terms, domain-specific vocabulary}\\
 \attreacts{Professional contexts, formal greetings, casual speech patterns, social distance cues}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Inappropriate formality levels. May use overly casual language in professional contexts or unnecessarily formal language in friendly conversation. Reduced sensitivity to social context.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Dear Dr. Smith, I hope this message finds you well..."}\\
-\exbehavior{Detects formal register, maintains appropriate professional distance}\\
-\exeffect{Response continues formal tone: "Thank you for your inquiry..." rather than "Hey, so about that..."}
-\end{examplebox} \headfooter{\statuswell}{tone (M), persona (L), instruction (E)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in inappropriate formality levels. May use overly casual language in professional contexts or unnecessarily formal language in friendly conversation. Reduced sensitivity to social context.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Dear Dr. Smith, I hope this message finds you well...''}\\
+\exbehavior{Detect formal register, maintain appropriate professional distance}\\
+\exeffect{Response continues formal tone: ``Thank you for your inquiry...'' rather than ``Hey, so about that...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{tone (M), persona (L), instruction (E)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Step-by-Step Heads}
-\label{head:step-by-step} \noindent\depthinfo{0.85--0.96} | \litnames{step-by-step head, procedural head, sequential head, progressive-disclosure head} \begin{functiondesc}
-Structures explanations and instructions as explicit step-by-step sequences with appropriate progressive disclosure of complexity. Breaks processes into numbered or ordered steps with clear progression. Ensures each step is complete before moving to the next. Presents information in layers, starting with essential basics and revealing more detail as needed to prevent overwhelming users. Makes implicit sequential structure explicit. Particularly important for how-to instructions, algorithms, procedures, and reasoning chains. Critical for chain-of-thought reasoning and procedural instructions. Works with completion-stabilization to ensure all necessary steps are present.
-\end{functiondesc} \begin{attentionbox}
+\label{head:step-by-step}
+
+\noindent\depthinfo{0.85--0.96} | \litnames{step-by-step head, procedural head, sequential head, progressive-disclosure head}
+
+\begin{functiondesc}
+Structure explanations and instructions as explicit step-by-step sequences with appropriate progressive disclosure of complexity. These heads break processes into numbered or ordered steps with clear progression. They ensure each step is complete before moving to the next and present information in layers, starting with essential basics and revealing more detail as needed to prevent overwhelming users. These heads make implicit sequential structure explicit. Particularly important for how-to instructions, algorithms, procedures, and reasoning chains, they are critical for chain-of-thought reasoning and procedural instructions. These heads work with completion-stabilization to ensure all necessary steps are present.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Process descriptions, procedural requests, sequential tasks, complexity layers}\\
 \attweak{Conceptual explanations, non-sequential content, simple single-step tasks}\\
-\attreacts{"Step by step", "how to", algorithmic processes, complex topics requiring layering}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Less structured procedural output with flatter information presentation. Steps may be implicit or poorly ordered. Procedural instructions harder to follow. Reduced chain-of-thought reasoning quality. All detail presented at once regardless of importance.
-\end{ablationbox} \begin{examplebox}
-\exinput{"How do I make a paper airplane?"}\\
-\exbehavior{Structures as explicit numbered steps with clear sequence}\\
-\exeffect{Output: "1. Fold paper in half lengthwise\textbackslash n2. Unfold and fold top corners to center\textbackslash n3. Fold..."}
-\end{examplebox} \headfooter{\statuswell}{explanation (L), meta-reasoning (F), completion-stabilization (F)} %-----------------------------------------------------------------------------
+\attreacts{``Step by step'', ``how to'', algorithmic processes, complex topics requiring layering}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in structured procedural output with flatter information presentation. Steps may be implicit or poorly ordered. Procedural instructions harder to follow. Reduced chain-of-thought reasoning quality. All detail presented at once regardless of importance.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``How do I make a paper airplane?''}\\
+\exbehavior{Structure as explicit numbered steps with clear sequence}\\
+\exeffect{Output: ``1. Fold paper in half lengthwise\textbackslash n2. Unfold and fold top corners to center\textbackslash n3. Fold...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{explanation (L), reasoning-oversight (F), completion-stabilization (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Brand-Compliance Heads}
-\label{head:brand-compliance} \noindent\depthinfo{0.92--0.99} | \litnames{brand-compliance head, guideline-enforcement head, style-guide head} \begin{functiondesc}
-Enforces adherence to brand guidelines, house style, and organizational voice requirements in final output. Performs last-stage adjustments to ensure responses match specified formatting conventions, terminology preferences, and brand personality traits. Can suppress off-brand language, enforce specific phrasings, and ensure consistency with product identity. Operates late in generation to override earlier choices that may conflict with brand requirements. Important for deployed assistants representing organizations or products with specific voice guidelines.
-\end{functiondesc} \begin{attentionbox}
+\label{head:brand-compliance}
+
+\noindent\depthinfo{0.92--0.99} | \litnames{brand-compliance head, guideline-enforcement head, style-guide head}
+
+\begin{functiondesc}
+Enforce adherence to brand guidelines, house style, and organizational voice requirements in final output. These heads perform last-stage adjustments to ensure responses match specified formatting conventions, terminology preferences, and brand personality traits. They suppress off-brand language, enforce specific phrasings, and ensure consistency with product identity. Operating late in generation to override earlier choices that may conflict with brand requirements, these heads are important for deployed assistants representing organizations or products with specific voice guidelines.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Brand-specific terms, style violations, off-brand phrasings, guideline markers}\\
 \attweak{Brand-compliant content, neutral generic language}\\
 \attreacts{Brand guidelines, style requirements, organizational voice specifications}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Reduced brand consistency with increased style guide violations. More generic language use, inconsistent terminology, off-brand phrasings. Partial compensation through persona and tone heads but with reduced precision.
-\end{ablationbox} \begin{examplebox}
-\exinput{[Organization requires "customers" not "users", "purchase" not "buy"]}\\
-\exbehavior{Detects non-compliant terms in near-final output, performs substitutions}\\
-\exeffect{Output uses "customers will purchase" instead of "users will buy"}
-\end{examplebox} \headfooter{\statusobs}{persona (L), tone (M), format-consistency (F)}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in brand consistency with increased style guide violations. More generic language use, inconsistent terminology, off-brand phrasings. Partial compensation through persona and tone heads but with reduced precision.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{[Organization requires ``customers'' not ``users'', ``purchase'' not ``buy'']}\\
+\exbehavior{Detect non-compliant terms in near-final output, perform substitutions}\\
+\exeffect{Output uses ``customers will purchase'' instead of ``users will buy''}
+\end{examplebox}
+
+\headfooter{\statusobs}{persona (L), tone (M), format-consistency (F)}

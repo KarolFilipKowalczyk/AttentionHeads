@@ -1,59 +1,117 @@
 %=============================================================================
 \subsection{Structural \& Boundary Stack}
-\label{sec:structural-stack} \textbf{Stack overview:} These heads detect structural boundaries in text, including delimiters, section markers, and document divisions. They help the model understand document organization and navigate hierarchical structure. %-----------------------------------------------------------------------------
+\label{sec:structural-stack}
+
+\textbf{Stack overview:} These heads detect structural boundaries in text, including delimiters, section markers, and document divisions. They help the model understand document organization and navigate hierarchical structure.
+
+%-----------------------------------------------------------------------------
 \subsubsection{(E) Delimiter Heads}
-\label{head:delimiter} \noindent\depthinfo{0.05--0.18} | \litnames{delimiter head, whitespace-structure head, separator head, punctuation head, space-parsing head, layout head} \begin{functiondesc}
-Detects and processes delimiter tokens that mark boundaries between structural elements, including punctuation marks, special characters, formatting symbols, and significant whitespace. Recognizes punctuation marks, brackets, delimiters, and special characters that indicate separation or grouping. Also processes whitespace characters (spaces, tabs, newlines) as structural elements rather than mere separators. Particularly important for languages where whitespace is syntactically significant (Python, YAML, Markdown). Distinguishes between semantically meaningful whitespace and irrelevant spacing. Important for understanding sentence boundaries, list items, code blocks, and structured data formats. Works at a fundamental level to identify basic structural segmentation. Provides boundary information to downstream heads that need to understand document organization. Essential for parsing formatted text, JSON, CSV, and other structured formats.
-\end{functiondesc} \begin{attentionbox}
+\label{head:delimiter}
+
+\noindent\depthinfo{0.05--0.18} | \litnames{delimiter head, whitespace-structure head, separator head, punctuation head, space-parsing head, layout head}
+
+\begin{functiondesc}
+Detect and process delimiter tokens that mark boundaries between structural elements, including punctuation marks, special characters, formatting symbols, and significant whitespace. These heads recognize punctuation marks, brackets, delimiters, and special characters that indicate separation or grouping. They also process whitespace characters (spaces, tabs, newlines) as structural elements rather than mere separators. Particularly important for languages where whitespace is syntactically significant (Python, YAML, Markdown), these heads distinguish between semantically meaningful whitespace and irrelevant spacing. Important for understanding sentence boundaries, list items, code blocks, and structured data formats, they work at a fundamental level to identify basic structural segmentation. These heads provide boundary information to downstream heads that need to understand document organization. Essential for parsing formatted text, JSON, CSV, and other structured formats.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Punctuation marks, brackets, delimiters, special characters, formatting symbols, whitespace patterns, indentation levels, line breaks, space-delimited structures}\\
 \attweak{Alphanumeric content, regular words, non-whitespace tokens, content within properly-spaced code}\\
 \attreacts{Structural punctuation, boundary markers, formatting characters, indentation changes, blank lines, significant spacing patterns}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Impaired structure parsing with degraded code formatting (degradation in format understanding and reduction in whitespace correctness). Difficulty with structured data, lists, and code blocks. Boundary detection errors. Problems parsing JSON, CSV, or other delimited formats. Particular problems with Python and other whitespace-significant languages. Incorrect indentation, missing line breaks, loss of code block structure. Reduced ability to segment text appropriately and to parse existing code structure.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Items: [apple, banana, cherry], Count: 3. def foo():\textbackslash n return 42"}\\
-\exbehavior{Detects brackets, commas, colons as structural delimiters; Recognizes 4-space indentation as significant structure}\\
-\exeffect{Model correctly parses structure: list with 3 items, separate count field; Understands return statement is inside function, not at module level}
-\end{examplebox} \headfooter{\statuswell}{boundary (E), relative-position (M), list-structure (L)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Significant impairment in structure parsing with degraded code formatting. Difficulty with structured data, lists, and code blocks. Boundary detection errors. Problems parsing JSON, CSV, or other delimited formats. Particular problems with Python and other whitespace-significant languages. Incorrect indentation, missing line breaks, loss of code block structure. Reduced ability to segment text appropriately and to parse existing code structure.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Items: [apple, banana, cherry], Count: 3. def foo():\textbackslash n    return 42''}\\
+\exbehavior{Detect brackets, commas, colons as structural delimiters; recognize 4-space indentation as significant structure}\\
+\exeffect{Model correctly parses structure: list with three items, separate count field; understands return statement is inside function, not at module level}
+\end{examplebox}
+
+\headfooter{\statuswell}{boundary (E), relative-position (M), list-structure (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(E) Boundary Heads}
-\label{head:boundary} \noindent\depthinfo{0.08--0.20} | \litnames{boundary head, segment head, block-detection head} \begin{functiondesc}
-Identifies boundaries between major text segments such as paragraphs, sections, and conceptual blocks. Operates at a higher level than delimiter heads, recognizing semantic and structural transitions rather than just punctuation. Detects paragraph breaks, section changes, topic shifts, and other high-level boundaries. Important for understanding document structure and maintaining appropriate context scope. Helps subsequent heads understand which information belongs to which segment. Critical for long documents with multiple sections or topics.
-\end{functiondesc} \begin{attentionbox}
+\label{head:boundary}
+
+\noindent\depthinfo{0.08--0.20} | \litnames{boundary head, segment head, block-detection head}
+
+\begin{functiondesc}
+Identify boundaries between major text segments such as paragraphs, sections, and conceptual blocks. Operating at a higher level than delimiter heads, these heads recognize semantic and structural transitions rather than just punctuation. They detect paragraph breaks, section changes, topic shifts, and other high-level boundaries. Important for understanding document structure and maintaining appropriate context scope, these heads help subsequent heads understand which information belongs to which segment. Critical for long documents with multiple sections or topics.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Paragraph breaks, section transitions, whitespace patterns, structural shifts}\\
 \attweak{Within-paragraph content, continuous text}\\
 \attreacts{Major structural boundaries, document divisions, topic transitions}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Reduced boundary awareness (degradation in segmentation). Model may blur distinctions between sections, miss paragraph boundaries, or fail to recognize document structure. Reduced performance on multi-section documents.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Introduction: [...] \textbackslash n\textbackslash n Methods: [...] \textbackslash n\textbackslash n Results: [...]"}\\
-\exbehavior{Detects section boundaries between Introduction, Methods, Results}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in boundary awareness and degraded segmentation. Model may blur distinctions between sections, miss paragraph boundaries, or fail to recognize document structure. Reduced performance on multi-section documents.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Introduction: [...] \textbackslash n\textbackslash n Methods: [...] \textbackslash n\textbackslash n Results: [...]''}\\
+\exbehavior{Detect section boundaries between Introduction, Methods, Results}\\
 \exeffect{Model understands these are separate sections, not continuous narrative}
-\end{examplebox} \headfooter{\statuswell}{delimiter (E), sectioning (L), relative-position (M)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statuswell}{delimiter (E), sectioning (L), relative-position (M)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(M) Relative-Position Heads}
-\label{head:relative-position} \noindent\depthinfo{0.35--0.65} | \litnames{relative-position head, position-offset head, contextual-position head, distance head, scope-position head} \begin{functiondesc}
-Tracks and computes relative positions between tokens, both in terms of raw offsets and structure-aware positions. Calculates offsets like "3 tokens back", "5 tokens forward", or "within same paragraph". Maintains position information relative to structural boundaries and scopes rather than absolute sequence position. Understands positions like "beginning of sentence", "middle of paragraph", "end of section". Important for patterns that depend on relative distance rather than absolute position. Works with other structural heads to understand boundaries and compute positions relative to those boundaries. Enables patterns like "attend to previous sentence" or "look ahead 2 tokens" without hardcoded position encodings. More sophisticated than absolute position encoding, providing context-aware position representations. Important for handling variable-length structures where absolute position is less meaningful than relative position within a scope. Enables position-dependent behavior that adapts to document structure.
-\end{functiondesc} \begin{attentionbox}
+\label{head:relative-position}
+
+\noindent\depthinfo{0.35--0.65} | \litnames{relative-position head, position-offset head, contextual-position head, distance head, scope-position head}
+
+\begin{functiondesc}
+Track and compute relative positions between tokens, both in terms of raw offsets and structure-aware positions. These heads calculate offsets like ``three tokens back'', ``five tokens forward'', or ``within same paragraph''. They maintain position information relative to structural boundaries and scopes rather than absolute sequence position, understanding positions like ``beginning of sentence'', ``middle of paragraph'', ``end of section''. Important for patterns that depend on relative distance rather than absolute position, these heads work with other structural heads to understand boundaries and compute positions relative to those boundaries. They enable patterns like ``attend to previous sentence'' or ``look ahead two tokens'' without hardcoded position encodings. More sophisticated than absolute position encoding, these heads provide context-aware position representations. Important for handling variable-length structures where absolute position is less meaningful than relative position within a scope, they enable position-dependent behavior that adapts to document structure.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Tokens at specific relative offsets, distance-based patterns, local neighborhoods, scope-relative positions, structure-aware locations, contextual position markers}\\
 \attweak{Distant unrelated tokens, position-independent content, absolute sequence positions}\\
 \attreacts{Relative position, distance relationships, local structure, structural scope boundaries, context-dependent positions, hierarchical location}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Impaired distance-sensitive patterns and loss of structure-aware positioning (degradation in offset-based attention and degradation in scope-sensitive behavior). Reduced ability to attend based on relative position. Patterns requiring "nearby" or "distance" computations become less reliable. Reduced ability to behave differently at "beginning" vs. "end" of structures. Position-dependent patterns become less adaptive to document structure. Some compensation through learned position encodings.
-\end{ablationbox} \begin{examplebox}
-\exinput{"The [SUBJECT] quickly [VERB] the [OBJECT]. Paragraph 1: [50 tokens] Paragraph 2: [20 tokens]"}\\
-\exbehavior{Computes that VERB is +1 from SUBJECT, OBJECT is +2 from VERB; Knows token 10 is "early in Para 1" while token 10 of Para 2 is "middle"}\\
-\exeffect{Enables grammatical patterns based on relative token positions; Position-dependent behavior adapts to paragraph structure, not absolute position}
-\end{examplebox} \headfooter{\statusobs}{boundary (E), previous-token (E), sectioning (L)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate impairment in distance-sensitive patterns and loss of structure-aware positioning. Reduced ability to attend based on relative position. Patterns requiring ``nearby'' or ``distance'' computations become less reliable. Reduced ability to behave differently at ``beginning'' versus ``end'' of structures. Position-dependent patterns become less adaptive to document structure. Some compensation through learned position encodings.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``The [SUBJECT] quickly [VERB] the [OBJECT]. Paragraph 1: [50 tokens] Paragraph 2: [20 tokens]''}\\
+\exbehavior{Compute that VERB is plus one from SUBJECT, OBJECT is plus two from VERB; know token 10 is ``early in Para 1'' while token 10 of Para 2 is ``middle''}\\
+\exeffect{Enable grammatical patterns based on relative token positions; position-dependent behavior adapts to paragraph structure, not absolute position}
+\end{examplebox}
+
+\headfooter{\statusobs}{boundary (E), previous-token (E), sectioning (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Sectioning Heads}
-\label{head:sectioning} \noindent\depthinfo{0.70--0.85} | \litnames{sectioning head, hierarchy head, document-structure head} \begin{functiondesc}
-Understands and maintains document hierarchical structure including sections, subsections, and nested organizational levels. Recognizes hierarchical markers like headings, numbering schemes, and indentation. Maintains awareness of current position within document hierarchy. Important for long documents, technical writing, and structured content. Enables appropriate context scoping: knowing that current text belongs to "Section 3.2.1" influences which prior content is relevant. Works with boundary heads but operates at higher semantic level.
-\end{functiondesc} \begin{attentionbox}
+\label{head:sectioning}
+
+\noindent\depthinfo{0.70--0.85} | \litnames{sectioning head, hierarchy head, document-structure head}
+
+\begin{functiondesc}
+Understand and maintain document hierarchical structure including sections, subsections, and nested organizational levels. These heads recognize hierarchical markers like headings, numbering schemes, and indentation. They maintain awareness of current position within document hierarchy. Important for long documents, technical writing, and structured content, these heads enable appropriate context scoping: knowing that current text belongs to ``Section 3.2.1'' influences which prior content is relevant. They work with boundary heads but operate at higher semantic level.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Section headings, hierarchical markers, document structure indicators, organizational signals}\\
 \attweak{Within-section content, unstructured text}\\
 \attreacts{Headings, numbering, hierarchy indicators, structural organization}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Reduced hierarchical awareness (degradation in structure understanding). Difficulty maintaining section context. Problems with document navigation and appropriate context scoping. Hierarchical relationships become less clear.
-\end{ablationbox} \begin{examplebox}
-\exinput{"1. Introduction \textbackslash n 1.1 Background \textbackslash n 1.2 Motivation \textbackslash n 2. Methods"}\\
-\exbehavior{Understands 1.1 and 1.2 are subsections of 1, separate from section 2}\\
-\exeffect{Maintains hierarchical context: text in 1.2 relates to 1.1 and 1, not to 2}
-\end{examplebox} \headfooter{\statuswell}{boundary (E), relative-position (M), topic-relevance (M)}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in hierarchical awareness and degraded structure understanding. Difficulty maintaining section context. Problems with document navigation and appropriate context scoping. Hierarchical relationships become less clear.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``1. Introduction \textbackslash n 1.1 Background \textbackslash n 1.2 Motivation \textbackslash n 2. Methods''}\\
+\exbehavior{Understand 1.1 and 1.2 are subsections of 1, separate from section 2}\\
+\exeffect{Maintain hierarchical context: text in 1.2 relates to 1.1 and 1, not to 2}
+\end{examplebox}
+
+\headfooter{\statuswell}{boundary (E), relative-position (M), topic-relevance (M)}

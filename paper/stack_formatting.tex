@@ -1,87 +1,173 @@
 %=============================================================================
 \subsection{Output Formatting \& Rewrite Stack}
-\label{sec:formatting-stack} \textbf{Stack overview:} This stack enforces output schemas, structures responses according to format requirements, and performs final rewriting. These heads ensure outputs conform to JSON, XML, lists, or other structured formats. %-----------------------------------------------------------------------------
+\label{sec:formatting-stack}
+
+\textbf{Stack overview:} This stack enforces output schemas, structures responses according to format requirements, and performs final rewriting. These heads ensure outputs conform to JSON, XML, lists, or other structured formats.
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Output-Schema Heads}
-\label{head:output-schema} \noindent\depthinfo{0.65--0.82} | \litnames{output-schema head, format-template head, structure-enforcement head, JSON-format head, output-format head, XML head, YAML head} \begin{functiondesc}
-Enforces adherence to specified output schemas and format requirements. When instructed to produce JSON, XML, YAML, or other structured formats, these heads promote conformance to the required structure. Attends to format specifications in the prompt and biases token generation toward schema-compliant outputs. Can enforce required fields, proper nesting, correct syntax, and format-specific conventions. Works by recognizing format keywords and maintaining awareness of structural requirements throughout generation.
-\end{functiondesc} \begin{attentionbox}
+\label{head:output-schema}
+
+\noindent\depthinfo{0.65--0.82} | \litnames{output-schema head, format-template head, structure-enforcement head, JSON-format head, output-format head, XML head, YAML head}
+
+\begin{functiondesc}
+Enforce adherence to specified output schemas and format requirements. When instructed to produce JSON, XML, YAML, or other structured formats, these heads promote conformance to the required structure. They attend to format specifications in the prompt and bias token generation toward schema-compliant outputs. These heads enforce required fields, proper nesting, correct syntax, and format-specific conventions by recognizing format keywords and maintaining awareness of structural requirements throughout generation.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Format specifications, schema definitions, structure requirements, template markers}\\
 \attweak{Content independent of format, semantic meaning}\\
 \attreacts{JSON/XML/YAML keywords, structure instructions, format examples}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Increased format violations (degradation in structured output). More syntax errors, missing required fields, improper nesting. Falls back to prose-like output even when structure is requested. Partial compensation through instruction-following but reduced precision.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Return a JSON object with fields 'name', 'age', and 'city'"}\\
-\exbehavior{Attends to JSON requirement and field specifications}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Significant increase in format violations and structured output errors. More syntax errors, missing required fields, and improper nesting. Model falls back to prose-like output even when structure is requested. Partial compensation through instruction-following mechanisms but with reduced precision.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Return a JSON object with fields `name', `age', and `city'''}\\
+\exbehavior{Attend to JSON requirement and field specifications}\\
 \exeffect{Output: \texttt{\{"name": "...", "age": ..., "city": "..."\}} with proper JSON syntax}
-\end{examplebox} \headfooter{\statuswell}{instruction (E), list-structure (L), format-consistency (F)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statuswell}{instruction (E), list-structure (L), format-consistency (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) List-Structure Heads}
-\label{head:list-structure} \noindent\depthinfo{0.68--0.85} | \litnames{list-structure head, enumeration head, itemization head, list head, markdown head} \begin{functiondesc}
-Manages the generation and formatting of lists, including numbered lists, bullet points, and nested enumerations. Ensures proper list syntax, consistent formatting, appropriate indentation, and logical item organization. Tracks list state (whether currently in a list, depth level, item number) and generates appropriate list markers. Coordinates with delimiter and boundary heads to recognize list structures in input and reproduce them in output. Essential for structured responses involving multiple items or steps.
-\end{functiondesc} \begin{attentionbox}
+\label{head:list-structure}
+
+\noindent\depthinfo{0.68--0.85} | \litnames{list-structure head, enumeration head, itemization head, list head, markdown head}
+
+\begin{functiondesc}
+Manage the generation and formatting of lists, including numbered lists, bullet points, and nested enumerations. These heads ensure proper list syntax, consistent formatting, appropriate indentation, and logical item organization. They track list state such as whether currently in a list, depth level, and item number, then generate appropriate list markers. These heads coordinate with delimiter and boundary heads to recognize list structures in input and reproduce them in output. Essential for structured responses involving multiple items or steps.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{List markers, enumeration patterns, item boundaries, list-related instructions}\\
 \attweak{Prose content, non-list structures}\\
-\attreacts{Numbered/bulleted list requests, "first", "second", "next", item markers}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Degraded list formatting ( reduction in list quality). Inconsistent numbering, missing markers, poor nesting. Lists may devolve into prose. Reduced ability to maintain list structure across long enumerations.
-\end{ablationbox} \begin{examplebox}
-\exinput{"List three programming languages and their primary uses"}\\
-\exbehavior{Generates structured list with consistent formatting}\\
-\exeffect{Output: "1. Python - ...\textbackslash n2. JavaScript - ...\textbackslash n3. Java - ..." with proper structure}
-\end{examplebox} \headfooter{\statuswell}{delimiter (E), boundary (E), output-schema (L)} %-----------------------------------------------------------------------------
+\attreacts{Numbered/bulleted list requests, ``first'', ``second'', ``next'', item markers}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate degradation in list formatting quality. Inconsistent numbering, missing markers, and poor nesting. Lists may devolve into prose. Reduced ability to maintain list structure across long enumerations.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``List three programming languages and their primary uses''}\\
+\exbehavior{Generate structured list with consistent formatting}\\
+\exeffect{Output: ``1. Python - ...\textbackslash n2. JavaScript - ...\textbackslash n3. Java - ...'' with proper structure}
+\end{examplebox}
+
+\headfooter{\statuswell}{delimiter (E), boundary (E), output-schema (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Key--Value Pairing Heads}
-\label{head:key-value} \noindent\depthinfo{0.70--0.88} | \litnames{key-value head, attribute-pairing head, field-association head, object head} \begin{functiondesc}
-Manages key-value relationships in structured data, promoting proper pairing of attributes with their values. Important for dictionary-like structures, JSON objects, configuration files, and attribute-value formats. Maintains awareness of which values correspond to which keys, promotes proper syntax (colons, equals signs), and handles nested key-value structures. Prevents key-value mismatches and maintains structural integrity in data-like outputs. Works closely with output-schema heads for format enforcement.
-\end{functiondesc} \begin{attentionbox}
+\label{head:key-value}
+
+\noindent\depthinfo{0.70--0.88} | \litnames{key-value head, attribute-pairing head, field-association head, object head}
+
+\begin{functiondesc}
+Manage key-value relationships in structured data, promoting proper pairing of attributes with their values. Important for dictionary-like structures, JSON objects, configuration files, and attribute-value formats. These heads maintain awareness of which values correspond to which keys, promote proper syntax (colons, equals signs), and handle nested key-value structures. They prevent key-value mismatches and maintain structural integrity in data-like outputs, working closely with output-schema heads for format enforcement.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Keys, values, pairing syntax (colons, equals), attribute names, field labels}\\
 \attweak{Unstructured text, list items without explicit key-value structure}\\
 \attreacts{Dictionary structures, configuration syntax, attribute-value patterns}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Increased key-value errors (degradation in structured data). Mismatched keys and values, syntax errors in pairings, confusion about which value belongs to which key. Reduced quality of JSON, YAML, and configuration outputs.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Create a configuration with server='localhost' and port=8080"}\\
-\exbehavior{Maintains proper key-value pairing throughout generation}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in key-value errors and degraded structured data quality. Mismatched keys and values, syntax errors in pairings, confusion about which value belongs to which key. Reduced quality of JSON, YAML, and configuration outputs.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Create a configuration with server=`localhost' and port=8080''}\\
+\exbehavior{Maintain proper key-value pairing throughout generation}\\
 \exeffect{Output: \texttt{\{server: "localhost", port: 8080\}} with correct associations}
-\end{examplebox} \headfooter{\statusobs}{output-schema (L), structural-block (L), format-consistency (F)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statusobs}{output-schema (L), structural-block (L), format-consistency (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Structural-Block Heads}
-\label{head:structural-block} \noindent\depthinfo{0.72--0.88} | \litnames{structural-block head, chunk-organization head, segment-builder head, block-structure head, code-block head, code-fence head, fence head, python head, quoting head} \begin{functiondesc}
-Organizes output into coherent structural blocks such as paragraphs, code blocks, quoted sections, or other delimited units. Manages block boundaries, promotes proper opening and closing of blocks, and maintains block-level organization. Particularly important for complex outputs mixing different content types (prose, code, quotes, examples). Coordinates with delimiter heads to produce proper block markers and with sectioning heads for hierarchical organization. Promotes well-formed and appropriately separated blocks.
-\end{functiondesc} \begin{attentionbox}
+\label{head:structural-block}
+
+\noindent\depthinfo{0.72--0.88} | \litnames{structural-block head, chunk-organization head, segment-builder head, block-structure head, code-block head, code-fence head, fence head, python head, quoting head}
+
+\begin{functiondesc}
+Organize output into coherent structural blocks such as paragraphs, code blocks, quoted sections, or other delimited units. These heads manage block boundaries, promote proper opening and closing of blocks, and maintain block-level organization. Particularly important for complex outputs mixing different content types (prose, code, quotes, examples), they coordinate with delimiter heads to produce proper block markers and with sectioning heads for hierarchical organization. These heads promote well-formed and appropriately separated blocks.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Block boundaries, structural markers, content-type transitions, organization cues}\\
 \attweak{Within-block content, uniform text}\\
 \attreacts{Block instructions, content-type changes, structure requirements}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Poorly organized outputs ( reduction in structural quality). Blocks may lack clear boundaries, mixing of content types, malformed code blocks or quotes. Reduced clarity in outputs requiring multiple content types.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Explain sorting with code example"}\\
-\exbehavior{Organizes response into prose block, then code block with proper delimiters}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in structural quality and organization. Blocks may lack clear boundaries, mixing of content types, malformed code blocks or quotes. Reduced clarity in outputs requiring multiple content types.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Explain sorting with code example''}\\
+\exbehavior{Organize response into prose block, then code block with proper delimiters}\\
 \exeffect{Output: explanation paragraph, then \texttt{```python...```} with clear separation}
-\end{examplebox} \headfooter{\statusobs}{list-structure (L), delimiter (E), output-schema (L)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statusobs}{list-structure (L), delimiter (E), output-schema (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Format-Consistency Heads}
-\label{head:format-consistency} \noindent\depthinfo{0.88--0.97} | \litnames{format-consistency head, rewrite head, style-enforcement head, coherence head, revision head, polish head} \begin{functiondesc}
-Performs final-stage formatting consistency enforcement and rewriting to improve output quality. Ensures that formatting choices (indentation, capitalization, punctuation style, syntax conventions) remain consistent throughout the response. Catches and corrects formatting inconsistencies that may have emerged during generation. Can rephrase awkward constructions, improve word choice, fix minor grammatical issues, and enhance overall readability. Acts as a quality control mechanism for format adherence, operating late enough to see the full output pattern. May suppress redundancies, improve flow, or adjust phrasing to better match context. Particularly important for long responses where consistency might drift. Acts as a final editing pass before output finalization.
-\end{functiondesc} \begin{attentionbox}
-\attstrong{Previously generated format patterns, consistency violations, style mismatches, generated output tokens, quality issues, awkward phrasings, improvement opportunities}\\
+\label{head:format-consistency}
+
+\noindent\depthinfo{0.88--0.97} | \litnames{format-consistency head, rewrite head, style-enforcement head, coherence head, revision head, polish head}
+
+\begin{functiondesc}
+Perform final-stage formatting consistency enforcement and rewriting to improve output quality. These heads ensure that formatting choices---indentation, capitalization, punctuation style, syntax conventions---remain consistent throughout the response. They catch and correct formatting inconsistencies that may have emerged during generation, rephrase awkward constructions, improve word choice, fix minor grammatical issues, and enhance overall readability. Acting as a quality control mechanism for format adherence, these heads operate late enough to see the full output pattern. They may suppress redundancies, improve flow, or adjust phrasing to better match context. Particularly important for long responses where consistency might drift, they act as a final editing pass before output finalization.
+\end{functiondesc}
+
+\begin{attentionbox}
+\attstrong{Previously generated format patterns, consistency violations, style mismatches, generated output tokens, quality issues, awkward phrasings}\\
 \attweak{Novel content, first-time format choices, already high-quality content, fundamental meaning}\\
 \attreacts{Format inconsistencies, style violations, syntax variations, grammatical issues, awkward constructions, clarity problems, redundancies}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Increased format inconsistency and reduced output polish ( more style variations and quality degradation). Mixed indentation, inconsistent capitalization, varying syntax choices. More awkward phrasings, occasional grammatical rough spots, less fluent prose. Output remains functional but less polished and professional-appearing. Functional but less refined outputs. Particularly noticeable in long structured outputs. Partial compensation through earlier generation quality.
-\end{ablationbox} \begin{examplebox}
-\exinput{[Long response mixing different list styles. Model generates: "The thing that is the reason is because..."]}\\
-\exbehavior{Detects inconsistent formatting, enforces unified style; Detects redundancy and awkwardness, rewrites}\\
-\exeffect{All lists use same marker style (either all bullets or all numbers), consistent throughout; Output: "The reason is..." - clearer and more concise}
-\end{examplebox} \headfooter{\statuswell}{output-schema (L), brand-compliance (F), completion-stabilization (F)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in format inconsistency and reduced output polish. Mixed indentation, inconsistent capitalization, varying syntax choices. More awkward phrasings, occasional grammatical rough spots, less fluent prose. Output remains functional but less polished and professional-appearing. Particularly noticeable in long structured outputs. Partial compensation through earlier generation quality.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{[Long response mixing different list styles. Model generates: ``The thing that is the reason is because...'']}\\
+\exbehavior{Detect inconsistent formatting, enforce unified style; detect redundancy and awkwardness, rewrite}\\
+\exeffect{All lists use same marker style (either all bullets or all numbers), consistent throughout; Output: ``The reason is...''---clearer and more concise}
+\end{examplebox}
+
+\headfooter{\statuswell}{output-schema (L), brand-compliance (F), completion-stabilization (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Completion-Stabilization Heads}
-\label{head:completion-stabilization} \noindent\depthinfo{0.92--0.99} | \litnames{completion-stabilization head, stopping head, termination head, completion head} \begin{functiondesc}
-Manages the completion of generation, determining when output is sufficiently complete and should terminate. Prevents premature stopping (cutting off mid-thought) and excessive continuation (rambling beyond task completion). Monitors generation progress against task requirements and signals when objectives are met. Can trigger natural stopping points, proper conclusions, or continuation when more content is needed. Critical for producing outputs of appropriate length that fully address prompts without unnecessary extension.
-\end{functiondesc} \begin{attentionbox}
+\label{head:completion-stabilization}
+
+\noindent\depthinfo{0.92--0.99} | \litnames{completion-stabilization head, stopping head, termination head, completion head}
+
+\begin{functiondesc}
+Manage the completion of generation, determining when output is sufficiently complete and should terminate. These heads prevent premature stopping (cutting off mid-thought) and excessive continuation (rambling beyond task completion). They monitor generation progress against task requirements and signal when objectives are met, triggering natural stopping points, proper conclusions, or continuation when more content is needed. Critical for producing outputs of appropriate length that fully address prompts without unnecessary extension.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Task completion signals, generation progress, stopping points, conclusion markers}\\
 \attweak{Mid-generation content, continuing thoughts}\\
 \attreacts{Task fulfillment, natural conclusions, query satisfaction, completion indicators}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Poor length control ( increase in length issues). More premature stops or excessive continuations. Difficulty recognizing task completion. Outputs may feel incomplete or unnecessarily verbose. Reduced ability to produce appropriately-scoped responses.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Explain photosynthesis briefly"}\\
-\exbehavior{Monitors that brief explanation is complete, triggers stopping}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in length control issues. More premature stops or excessive continuations. Difficulty recognizing task completion. Outputs may feel incomplete or unnecessarily verbose. Reduced ability to produce appropriately-scoped responses.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Explain photosynthesis briefly''}\\
+\exbehavior{Monitor that brief explanation is complete, trigger stopping}\\
 \exeffect{Output stops after concise explanation rather than continuing with excessive detail}
-\end{examplebox} \headfooter{\statusobs}{format-consistency (F), instruction (E), task-mode (M)}
+\end{examplebox}
+
+\headfooter{\statusobs}{format-consistency (F), instruction (E), task-mode (M)}

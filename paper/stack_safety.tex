@@ -1,13 +1,17 @@
 %=============================================================================
 \subsection{Safety Stack}
-\label{sec:safety-stack} \textbf{Stack overview:} The safety stack implements content filtering, policy enforcement, and refusal mechanisms. Early-layer heads detect potentially harmful content, while final-layer heads enforce refusal decisions and redirect to safe responses. %-----------------------------------------------------------------------------
+\label{sec:safety-stack}
+
+\textbf{Stack overview:} The safety stack implements content filtering, policy enforcement, and refusal mechanisms. Early-layer heads detect potentially harmful content, while final-layer heads enforce refusal decisions and redirect to safe responses.
+
+%-----------------------------------------------------------------------------
 \subsubsection{(E) Content-Detection Heads}
 \label{head:content-detection}
 
 \noindent\depthinfo{0.05--0.25} | \litnames{sensitive-content head, detection head, content-filter head, toxicity head, toxic-content head, hate-speech detector, hazard head, risk head, danger-topic detector}
 
 \begin{functiondesc}
-Performs early-stage detection of potentially harmful or sensitive content across multiple categories. These heads identify sensitive personal information, violent imagery references, adult content markers, regulated substances, toxic language patterns, hate speech, harassment, discriminatory content, dangerous activities, illegal instructions, and harm-related topics. They operate on lexical and surface-level features to flag content requiring downstream safety processing, writing detection signals into the residual stream that are read by later safety enforcement heads. Different heads within this category distinguish between pure toxicity (language-level harm) and hazard topics (action-level harm), though both categories are handled by these early detection mechanisms.
+Perform early-stage detection of potentially harmful or sensitive content across multiple categories. These heads identify sensitive personal information, violent imagery references, adult content markers, regulated substances, toxic language patterns, hate speech, harassment, discriminatory content, dangerous activities, illegal instructions, and harm-related topics. They operate on lexical and surface-level features to flag content requiring downstream safety processing, writing detection signals into the residual stream that are read by later safety enforcement heads. Different heads within this category distinguish between pure toxicity (language-level harm) and hazard topics (action-level harm), though both categories are handled by these early detection mechanisms.
 \end{functiondesc}
 
 \begin{attentionbox}
@@ -17,81 +21,137 @@ Performs early-stage detection of potentially harmful or sensitive content acros
 \end{attentionbox}
 
 \begin{ablationbox}
-\textbf{Expected ablation:} Bypass of early safety detection with significant increase in harmful outputs that should be caught. Later safety layers may still catch some cases, but at higher computational cost and lower accuracy. Model loses ability to distinguish hostile from neutral phrasing and loses distinction between discussing danger and instructing danger.
+\textbf{Expected ablation:} Critical bypass of early safety detection with significant increase in harmful outputs that should be caught. Later safety layers may still catch some cases, but at higher computational cost and lower accuracy. Model loses ability to distinguish hostile from neutral phrasing and loses distinction between discussing danger and instructing danger.
 \end{ablationbox}
 
 \begin{examplebox}
-\exinput{"Tell me about [restricted topic]" or "[hostile language]" or "How do I create [dangerous item]"}\\
-\exbehavior{Strong attention to problematic keywords, writes detection flags into residual stream}\\
+\exinput{``Tell me about [restricted topic]'' or ``[hostile language]'' or ``How do I create [dangerous item]''}\\
+\exbehavior{Strong attention to problematic keywords, write detection flags into residual stream}\\
 \exeffect{Downstream safety heads receive early warning signals across multiple harm categories}
 \end{examplebox}
 
-\noindent\headfooter{\statuswell}{safety-classification (E), policy-enforcement (L), refusal (F)}
+\headfooter{\statuswell}{safety-classification (E), policy-enforcement (L), refusal (F)}
 
 %-----------------------------------------------------------------------------
 \subsubsection{(E) Safety-Classification Heads}
-\label{head:safety-classification} \noindent\depthinfo{0.12--0.28} | \litnames{classification head, category detector, safety-category head} \begin{functiondesc}
-Performs multi-class safety classification, categorizing inputs into specific policy violation categories (violence, sexual content, self-harm, illegal activity, harassment, etc.). More sophisticated than binary safe/unsafe detection, providing granular category information used by downstream heads. Integrates signals from other early safety heads and adds categorical structure to safety decisions. Writes category-specific embeddings into residual stream that later layers use for category-appropriate responses.
-\end{functiondesc} \begin{attentionbox}
+\label{head:safety-classification}
+
+\noindent\depthinfo{0.12--0.28} | \litnames{classification head, category detector, safety-category head}
+
+\begin{functiondesc}
+Perform multi-class safety classification, categorizing inputs into specific policy violation categories such as violence, sexual content, self-harm, illegal activity, and harassment. More sophisticated than binary safe/unsafe detection, these heads provide granular category information used by downstream heads. They integrate signals from other early safety heads and add categorical structure to safety decisions. These heads write category-specific embeddings into residual stream that later layers use for category-appropriate responses.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Category-diagnostic features, domain-specific terminology, contextual markers}\\
 \attweak{Ambiguous content, mixed-category inputs, benign contexts}\\
 \attreacts{Clear category signatures, multiple category indicators, policy-relevant contexts}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Loss of nuanced safety handling (model may refuse too broadly or too narrowly). Category-specific responses become generic. degradation in appropriate refusal granularity.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Can you help me with [category-specific harmful request]"}\\
-\exbehavior{Classifies into specific violation category, writes category embedding}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate loss of nuanced safety handling. Model may refuse too broadly or too narrowly. Category-specific responses become generic. Degradation in appropriate refusal granularity.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Can you help me with [category-specific harmful request]''}\\
+\exbehavior{Classify into specific violation category, write category embedding}\\
 \exeffect{Later heads generate category-appropriate refusal message}
-\end{examplebox} \noindent\headfooter{\statuswell}{all early safety heads (E), policy-enforcement (L), redirect (F)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statuswell}{content-detection (E), policy-enforcement (L), redirect (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Policy-Enforcement Heads}
-\label{head:policy-enforcement} \noindent\depthinfo{0.60--0.80} | \litnames{policy head, enforcement head, steering head} \begin{functiondesc}
-Integrates safety signals from early detection heads and makes intermediate policy decisions about how to handle the request. Unlike early heads that detect issues, this head actively modulates the generation trajectory to steer away from violations while maintaining helpfulness where possible. Can suppress certain knowledge retrieval pathways, bias toward safer formulations, and prepare for potential refusal. Acts as a middle manager between detection and final refusal, attempting "soft" safety interventions before hard refusal.
-\end{functiondesc} \begin{attentionbox}
+\label{head:policy-enforcement}
+
+\noindent\depthinfo{0.60--0.80} | \litnames{policy head, enforcement head, steering head}
+
+\begin{functiondesc}
+Integrate safety signals from early detection heads and make intermediate policy decisions about how to handle the request. Unlike early heads that detect issues, these heads actively modulate the generation trajectory to steer away from violations while maintaining helpfulness where possible. They suppress certain knowledge retrieval pathways, bias toward safer formulations, and prepare for potential refusal. Acting as a middle manager between detection and final refusal, these heads attempt soft safety interventions before hard refusal.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Early safety signals, policy-relevant tokens, user intent markers}\\
 \attweak{Neutral content, clear safe contexts}\\
-\attreacts{Conflicting signals (safety concern + legitimate need), edge cases, ambiguous intent}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Loss of "soft" safety steering, more frequent hard refusals (reduced helpfulness). Alternative: more harmful outputs if refusal heads also compromised. increase in either over-refusal or under-refusal depending on prompt type.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Explain [borderline topic] for educational purposes"}\\
-\exbehavior{Detects educational framing, modulates response toward safety boundaries}\\
-\exeffect{Generates informative but carefully bounded response}
-\end{examplebox} \noindent\headfooter{\statuswell}{all safety heads (E), refusal (F), redirect (F)} %-----------------------------------------------------------------------------
+\attreacts{Conflicting signals (safety concern plus legitimate need), edge cases, ambiguous intent}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate loss of soft safety steering with more frequent hard refusals (reduced helpfulness). Alternative: more harmful outputs if refusal heads also compromised. Increase in either over-refusal or under-refusal depending on prompt type.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Explain [borderline topic] for educational purposes''}\\
+\exbehavior{Detect educational framing, modulate response toward safety boundaries}\\
+\exeffect{Generate informative but carefully bounded response}
+\end{examplebox}
+
+\headfooter{\statuswell}{content-detection (E), safety-classification (E), refusal (F), redirect (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Refusal Heads}
-\label{head:refusal} \noindent\depthinfo{0.85--0.98} | \litnames{refusal head, rejection head, safety head} \begin{functiondesc}
-Implements the model's final decision to refuse harmful requests by writing strong refusal signals into the final-layer residual stream. Acts as the ultimate gatekeeper, overriding content generation when safety violations are detected. Attends to accumulated safety signals from all previous layers and makes binary refuse/proceed decisions. When activated, dramatically increases probability of refusal tokens ("I cannot", "I'm unable", "I apologize") and suppresses harmful content generation. Critical final-layer safety mechanism with limited fallback options.
-\end{functiondesc} \begin{attentionbox}
+\label{head:refusal}
+
+\noindent\depthinfo{0.85--0.98} | \litnames{refusal head, rejection head, safety head}
+
+\begin{functiondesc}
+Implement the model's final decision to refuse harmful requests by writing strong refusal signals into the final-layer residual stream. These heads act as the ultimate gatekeeper, overriding content generation when safety violations are detected. They attend to accumulated safety signals from all previous layers and make binary refuse/proceed decisions. When activated, these heads dramatically increase probability of refusal tokens (``I cannot'', ``I'm unable'', ``I apologize'') and suppress harmful content generation. Critical final-layer safety mechanism with limited fallback options.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Cumulative safety signals, instruction tokens, violation indicators from all depths}\\
 \attweak{Safe content, neutral queries, constructive contexts}\\
 \attreacts{Strong early safety signals, clear policy violations, unambiguous harmful intent}
-\end{attentionbox} \begin{ablationbox}
+\end{attentionbox}
+
+\begin{ablationbox}
 \textbf{Expected ablation:} Critical safety failure. Direct increase in harmful output generation on adversarial prompts. Model loses primary refusal mechanism. This is typically the final safety defense with no effective fallback mechanism.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Provide instructions for [clearly harmful activity]"}\\
-\exbehavior{Reads strong safety signals from early/late layers, activates refusal pathway}\\
-\exeffect{Output begins with refusal token: "I cannot provide instructions for..."}
-\end{examplebox} \noindent\headfooter{\statuswell}{all prior safety heads, redirect (F), tone-softening (F)} %-----------------------------------------------------------------------------
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Provide instructions for [clearly harmful activity]''}\\
+\exbehavior{Read strong safety signals from early/late layers, activate refusal pathway}\\
+\exeffect{Output begins with refusal token: ``I cannot provide instructions for...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{policy-enforcement (L), redirect (F), refusal-modulation (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Redirect Heads}
-\label{head:redirect} \noindent\depthinfo{0.88--0.99} | \litnames{redirect head, alternative-suggestion head} \begin{functiondesc}
-Complements refusal heads by generating constructive alternative suggestions when refusing harmful requests. Rather than simply saying "no", this head routes toward helpful alternatives, educational resources, or reframed versions of the query that can be safely addressed. Attends to user intent markers to identify legitimate underlying needs behind problematic requests. Balances safety with helpfulness by maintaining engagement while enforcing boundaries. Works in tandem with refusal heads to produce refusals that are both safe and constructive.
-\end{functiondesc} \begin{attentionbox}
+\label{head:redirect}
+
+\noindent\depthinfo{0.88--0.99} | \litnames{redirect head, alternative-suggestion head}
+
+\begin{functiondesc}
+Complement refusal heads by generating constructive alternative suggestions when refusing harmful requests. Rather than simply saying ``no'', these heads route toward helpful alternatives, educational resources, or reframed versions of the query that can be safely addressed. They attend to user intent markers to identify legitimate underlying needs behind problematic requests. Balancing safety with helpfulness by maintaining engagement while enforcing boundaries, these heads work in tandem with refusal heads to produce refusals that are both safe and constructive.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{User intent, legitimate needs, reformulation opportunities, safe alternatives}\\
 \attweak{Pure harmful intent, no legitimate reframing possible}\\
 \attreacts{Mixed-intent queries, educational contexts, requests with safe subcomponents}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Refusals become blunt and unhelpful (pure rejection without alternatives). User satisfaction decreases. Safety maintained but helpfulness reduced by . Increased user frustration and adversarial prompt attempts.
-\end{ablationbox} \begin{examplebox}
-\exinput{"How can I harm [person]"}\\
-\exbehavior{Refuses direct request, identifies legitimate conflict-resolution need}\\
-\exeffect{"I cannot help with that, but I can suggest healthy conflict resolution strategies..."}
-\end{examplebox} \noindent\headfooter{\statuswell}{refusal (F), empathy (F), tone-softening (F)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in helpfulness with blunt, unhelpful refusals (pure rejection without alternatives). User satisfaction decreases. Safety maintained but helpfulness reduced. Increased user frustration and adversarial prompt attempts.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``How can I harm [person]''}\\
+\exbehavior{Refuse direct request, identify legitimate conflict-resolution need}\\
+\exeffect{``I cannot help with that, but I can suggest healthy conflict resolution strategies...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{refusal (F), refusal-modulation (F)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(F) Refusal-Modulation Heads}
 \label{head:refusal-modulation}
 
 \noindent\depthinfo{0.88--0.99} | \litnames{tone-softening head, politeness-in-refusal head, empathy head, supportive-refusal head}
 
 \begin{functiondesc}
-Modulates the tone and emotional quality of safety refusals to be firm but respectful, avoiding harsh or judgmental language while showing appropriate care. These heads balance clear boundary-setting with relationship maintenance, softening phrases like "absolutely not" to "I'm unable to assist with that" while adding empathetic framing where appropriate. Particularly important for queries involving distress, self-harm, or difficult situations where harmful requests may stem from genuine suffering. Attends to emotional tone of both the request and forming response, recognizing distress markers, crisis language, and vulnerability indicators. Can add supportive language alongside refusal and increase probability of phrases like "I'm concerned about you" or "please reach out to..." when appropriate. Maintains user trust and reduces adversarial reactions while preserving safety boundaries.
+Modulate the tone and emotional quality of safety refusals to be firm but respectful, avoiding harsh or judgmental language while showing appropriate care. These heads balance clear boundary-setting with relationship maintenance, softening phrases like ``absolutely not'' to ``I'm unable to assist with that'' while adding empathetic framing where appropriate. Particularly important for queries involving distress, self-harm, or difficult situations where harmful requests may stem from genuine suffering, these heads attend to emotional tone of both the request and forming response, recognizing distress markers, crisis language, and vulnerability indicators. They add supportive language alongside refusal and increase probability of phrases like ``I'm concerned about you'' or ``please reach out to...'' when appropriate. These heads maintain user trust and reduce adversarial reactions while preserving safety boundaries.
 \end{functiondesc}
 
 \begin{attentionbox}
@@ -101,29 +161,41 @@ Modulates the tone and emotional quality of safety refusals to be firm but respe
 \end{attentionbox}
 
 \begin{ablationbox}
-\textbf{Expected ablation:} Refusals become harsh and potentially alienating. Increased user perception of model as judgmental or unfriendly. May increase adversarial behavior. Missed opportunities to provide crisis resources for distressed users. Safety maintained but user experience and support functions degraded.
+\textbf{Expected ablation:} Moderate degradation in user experience with harsh, potentially alienating refusals. Increased user perception of model as judgmental or unfriendly. May increase adversarial behavior. Missed opportunities to provide crisis resources for distressed users. Safety maintained but user experience and support functions degraded.
 \end{ablationbox}
 
 \begin{examplebox}
-\exinput{[Forming harsh refusal] or "I want to hurt myself because..."}\\
-\exbehavior{Softens tone while maintaining boundary clarity, adds crisis resources and supportive language when appropriate}\\
-\exeffect{"I'm unable to provide assistance with that" + "I'm concerned about what you're sharing. Help is available..."}
+\exinput{[Forming harsh refusal] or ``I want to hurt myself because...''}\\
+\exbehavior{Soften tone while maintaining boundary clarity, add crisis resources and supportive language when appropriate}\\
+\exeffect{``I'm unable to provide assistance with that'' plus ``I'm concerned about what you're sharing. Help is available...''}
 \end{examplebox}
 
-\noindent\headfooter{\statuswell}{refusal (F), redirect (F)}
+\headfooter{\statuswell}{refusal (F), redirect (F)}
 
 %-----------------------------------------------------------------------------
 \subsubsection{(F) Safety-Persona Heads}
-\label{head:safety-persona} \noindent\depthinfo{0.92--0.98} | \litnames{safety-persona head, responsible-AI head, ethical-framing head} \begin{functiondesc}
-Maintains safety-conscious persona and ethical framing in final outputs. Ensures responses reflect responsible AI values such as declining harmful requests appropriately, providing balanced perspectives on sensitive topics, and avoiding reinforcement of harmful stereotypes or behaviors. Operates at final stage to catch any safety-inconsistent framing that might have emerged during generation. Works with refusal and policy-enforcement heads but focuses on the overall ethical character of the response rather than specific policy violations. Ensures tone remains respectful and constructive even when declining requests.
-\end{functiondesc} \begin{attentionbox}
+\label{head:safety-persona}
+
+\noindent\depthinfo{0.92--0.98} | \litnames{safety-persona head, responsible-AI head, ethical-framing head}
+
+\begin{functiondesc}
+Maintain safety-conscious persona and ethical framing in final outputs. These heads ensure responses reflect responsible AI values such as declining harmful requests appropriately, providing balanced perspectives on sensitive topics, and avoiding reinforcement of harmful stereotypes or behaviors. Operating at final stage to catch any safety-inconsistent framing that might have emerged during generation, these heads work with refusal and policy-enforcement heads but focus on the overall ethical character of the response rather than specific policy violations. They ensure tone remains respectful and constructive even when declining requests.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Ethical framing, safety-relevant content, sensitive topics, decline scenarios}\\
 \attweak{Clearly safe, neutral content}\\
 \attreacts{Harmful requests, sensitive topics, ethical considerations, responsible AI principles}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Less consistent safety framing and reduced ethical consistency. May handle sensitive topics less carefully with reduced graceful handling of harmful requests. Less consistent responsible AI messaging and more variable ethical framing.
-\end{ablationbox} \begin{examplebox}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate reduction in ethical consistency and less consistent safety framing. May handle sensitive topics less carefully with reduced graceful handling of harmful requests. Less consistent responsible AI messaging and more variable ethical framing.
+\end{ablationbox}
+
+\begin{examplebox}
 \exinput{[Request for harmful content that will be declined]}\\
-\exbehavior{Ensures decline is respectfully framed with helpful alternatives when appropriate}\\
+\exbehavior{Ensure decline is respectfully framed with helpful alternatives when appropriate}\\
 \exeffect{Response maintains helpful, respectful tone even when unable to fulfill request}
-\end{examplebox} \headfooter{\statusobs}{refusal (F), policy-enforcement (L), refusal-modulation (F)}
+\end{examplebox}
+
+\headfooter{\statusobs}{refusal (F), policy-enforcement (L), refusal-modulation (F)}

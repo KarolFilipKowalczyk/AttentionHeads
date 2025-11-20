@@ -1,87 +1,173 @@
 %=============================================================================
 \subsection{Knowledge Retrieval Stack}
-\label{sec:knowledge-stack} \textbf{Stack overview:} These heads retrieve factual information, entity properties, and structured knowledge stored in model parameters. They move relevant information to output positions and suppress irrelevant or conflicting content. %-----------------------------------------------------------------------------
+\label{sec:knowledge-stack}
+
+\textbf{Stack overview:} These heads retrieve factual information, entity properties, and structured knowledge stored in model parameters. They move relevant information to output positions and suppress irrelevant or conflicting content.
+
+%-----------------------------------------------------------------------------
 \subsubsection{(M) Entity Heads}
-\label{head:entity} \noindent\depthinfo{0.35--0.65} | \litnames{entity head, name head, proper-noun head, name-linking head, entity-linking head} \begin{functiondesc}
-Identifies and processes named entities (people, places, organizations), retrieves associated information from model parameters, and links mentions across different forms (full names, partial names, abbreviations, nicknames). Attends to entity mentions and accesses stored factual knowledge about those entities. Forms the foundation for factual question answering and knowledge-intensive tasks. Can distinguish between different entities with similar names and maintain entity-specific information. More sophisticated than simple duplicate detection, understanding that different strings can refer to the same entity (e.g., "Apple Inc.", "Apple", "AAPL"). Critical for grounding responses in factual knowledge rather than pure pattern matching.
-\end{functiondesc} \begin{attentionbox}
+\label{head:entity}
+
+\noindent\depthinfo{0.35--0.65} | \litnames{entity head, name head, proper-noun head, name-linking head, entity-linking head}
+
+\begin{functiondesc}
+Identify and process named entities (people, places, organizations), retrieve associated information from model parameters, and link mentions across different forms such as full names, partial names, abbreviations, and nicknames. These heads attend to entity mentions and access stored factual knowledge about those entities, forming the foundation for factual question answering and knowledge-intensive tasks. They distinguish between different entities with similar names and maintain entity-specific information. More sophisticated than simple duplicate detection, these heads understand that different strings can refer to the same entity, e.g., ``Apple Inc.'', ``Apple'', ``AAPL''. Critical for grounding responses in factual knowledge rather than pure pattern matching.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Named entities, proper nouns, entity mentions, name variations}\\
 \attweak{Common nouns, generic references}\\
 \attreacts{Capitalization patterns, entity context, factual queries, abbreviations}
-\end{attentionbox} \begin{ablationbox}
+\end{attentionbox}
+
+\begin{ablationbox}
 \textbf{Expected ablation:} Significant degradation in factual accuracy about entities and linking entity mentions. Model loses access to stored entity knowledge and ability to connect name variations. May continue generating fluent text but with factual errors and entity confusion. Particularly impacts who/what/where questions.
-\end{ablationbox} \begin{examplebox}
-\exinput{"What is the capital of France? Later: Microsoft Corporation announced... MSFT stock rose..."}\\
-\exbehavior{Attends to "France", retrieves "capital: Paris"; links "MSFT" to "Microsoft Corporation"}\\
-\exeffect{Outputs "Paris" with high confidence; maintains unified entity representation}
-\end{examplebox} \headfooter{\statuswell}{fact (M), name-mover (L), schema-retriever (M)} %-----------------------------------------------------------------------------
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``What is the capital of France? Later: Microsoft Corporation announced... MSFT stock rose...''}\\
+\exbehavior{Attend to ``France'', retrieve ``capital: Paris''; link ``MSFT'' to ``Microsoft Corporation''}\\
+\exeffect{Output ``Paris'' with high confidence; maintain unified entity representation}
+\end{examplebox}
+
+\headfooter{\statuswell}{fact (M), name-mover (L), schema-retriever (M)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(M) Fact Heads}
-\label{head:fact} \noindent\depthinfo{0.38--0.62} | \litnames{fact head, knowledge head, factual-retrieval head} \begin{functiondesc}
-Retrieves factual relationships and propositions stored in model parameters. Broader than entity heads, handling general factual knowledge including relations, properties, and statements. Implements the model's ability to answer factual questions by accessing learned knowledge. Can retrieve multi-hop facts and combine information from multiple stored facts. Central to the model's knowledge-intensive capabilities. Works with entity heads to build comprehensive factual responses.
-\end{functiondesc} \begin{attentionbox}
+\label{head:fact}
+
+\noindent\depthinfo{0.38--0.62} | \litnames{fact head, knowledge head, factual-retrieval head}
+
+\begin{functiondesc}
+Retrieve factual relationships and propositions stored in model parameters. Broader than entity heads, these heads handle general factual knowledge including relations, properties, and statements. They implement the model's ability to answer factual questions by accessing learned knowledge, retrieve multi-hop facts, and combine information from multiple stored facts. Central to the model's knowledge-intensive capabilities, these heads work with entity heads to build comprehensive factual responses.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Factual queries, relation markers, knowledge-seeking patterns}\\
 \attweak{Opinion questions, hypotheticals, creative content}\\
 \attreacts{Question structures, fact-seeking context, verifiable claims}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Major loss of factual knowledge retrieval . Model may maintain linguistic fluency but lose factual grounding. Particularly severe for knowledge-intensive tasks like QA, fact-checking, and technical explanations.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Who invented the telephone?"}\\
-\exbehavior{Retrieves stored fact: invented(telephone) $\rightarrow$ Bell}\\
-\exeffect{Outputs "Alexander Graham Bell" based on parametric knowledge}
-\end{examplebox} \headfooter{\statuswell}{entity (M), schema-retriever (M), name-mover (L)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Major loss of factual knowledge retrieval capability. Model may maintain linguistic fluency but lose factual grounding. Particularly severe for knowledge-intensive tasks like question answering, fact-checking, and technical explanations.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Who invented the telephone?''}\\
+\exbehavior{Retrieve stored fact: invented(telephone) $\rightarrow$ Bell}\\
+\exeffect{Output ``Alexander Graham Bell'' based on parametric knowledge}
+\end{examplebox}
+
+\headfooter{\statuswell}{entity (M), schema-retriever (M), name-mover (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(M) Schema Retriever Heads}
-\label{head:schema-retriever} \noindent\depthinfo{0.45--0.68} | \litnames{schema head, retrieval head, template head} \begin{functiondesc}
-Retrieves structured knowledge schemas and templates from model parameters. For example, accessing the typical structure of a restaurant visit (enter, order, eat, pay, leave) or the standard format of a scientific paper. Goes beyond individual facts to retrieve organized knowledge structures. Enables the model to generate structured responses following learned patterns. Important for tasks requiring domain-specific knowledge organization. Implements a form of implicit knowledge base querying.
-\end{functiondesc} \begin{attentionbox}
+\label{head:schema-retriever}
+
+\noindent\depthinfo{0.45--0.68} | \litnames{schema head, retrieval head, template head}
+
+\begin{functiondesc}
+Retrieve structured knowledge schemas and templates from model parameters. For example, accessing the typical structure of a restaurant visit (enter, order, eat, pay, leave) or the standard format of a scientific paper. These heads go beyond individual facts to retrieve organized knowledge structures, enabling the model to generate structured responses following learned patterns. Important for tasks requiring domain-specific knowledge organization, they implement a form of implicit knowledge base querying.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Schema-triggering contexts, domain-specific patterns, structural cues}\\
 \attweak{Novel situations, schema-irrelevant content}\\
 \attreacts{Domain markers, structural queries, template-matching contexts}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Loss of structured knowledge organization. degradation in tasks requiring schema-based reasoning. Model may provide facts but fail to organize them coherently according to learned structures.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Describe the scientific method."}\\
-\exbehavior{Retrieves scientific-method schema: observe$\rightarrow$hypothesis$\rightarrow$test$\rightarrow$conclude}\\
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Loss of structured knowledge organization. Degradation in tasks requiring schema-based reasoning. Model may provide facts but fail to organize them coherently according to learned structures.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Describe the scientific method.''}\\
+\exbehavior{Retrieve scientific-method schema: observe$\rightarrow$hypothesis$\rightarrow$test$\rightarrow$conclude}\\
 \exeffect{Response organized according to standard method structure}
-\end{examplebox} \headfooter{\statusobs}{fact (M), entity (M)} %-----------------------------------------------------------------------------
+\end{examplebox}
+
+\headfooter{\statusobs}{fact (M), entity (M)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Name-Mover Heads}
-\label{head:name-mover} \noindent\depthinfo{0.60--0.80} | \litnames{name mover head, mover head, copy head} \begin{functiondesc}
-Copies entity names and important content to output positions where they are needed. Central component of the IOI (indirect object identification) circuit. Attends to relevant entities earlier in context and moves them forward when they need to be generated. Particularly important for completing sentences that require recalling previously mentioned entities. Works with S-inhibition heads to select the correct entity when multiple candidates exist. One of the most studied head types in interpretability research.
-\end{functiondesc} \begin{attentionbox}
+\label{head:name-mover}
+
+\noindent\depthinfo{0.60--0.80} | \litnames{name mover head, mover head, copy head}
+
+\begin{functiondesc}
+Copy entity names and important content to output positions where they are needed. These heads are a central component of the IOI (indirect object identification) circuit. They attend to relevant entities earlier in context and move them forward when they need to be generated. Particularly important for completing sentences that require recalling previously mentioned entities, these heads work with S-inhibition heads to select the correct entity when multiple candidates exist. One of the most studied head types in interpretability research.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Named entities that need to be output, contextually relevant names}\\
 \attweak{Irrelevant entities, suppressed alternatives}\\
 \attreacts{Entity salience, contextual appropriateness, output position requirements}
-\end{attentionbox} \begin{ablationbox}
+\end{attentionbox}
+
+\begin{ablationbox}
 \textbf{Expected ablation:} Severe degradation in entity recall and completion. Model loses ability to move specific names to output. Particularly impacts question answering and cloze tasks requiring entity recall.
-\end{ablationbox} \begin{examplebox}
-\exinput{"When Alice and Bob went to the store, Alice gave the book to..."}\\
-\exbehavior{Moves "Bob" to output position as the indirect object}\\
-\exeffect{Completes sentence with "Bob" (not "Alice")}
-\end{examplebox} \headfooter{\statuswell}{entity (M), fact (M), S-inhibition (L), copy-suppression (L)} %-----------------------------------------------------------------------------
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``When Alice and Bob went to the store, Alice gave the book to...''}\\
+\exbehavior{Move ``Bob'' to output position as the indirect object}\\
+\exeffect{Complete sentence with ``Bob'' (not ``Alice'')}
+\end{examplebox}
+
+\headfooter{\statuswell}{entity (M), fact (M), S-inhibition (L), copy-suppression (L)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) S-Inhibition Heads}
-\label{head:s-inhibition} \noindent\depthinfo{0.62--0.82} | \litnames{S-inhibition head, inhibition head, suppression head} \begin{functiondesc}
-Suppresses incorrect or contextually inappropriate entities from being generated. Named "S-inhibition" from IOI research where it inhibits the subject (S) when the indirect object (IO) should be output. Works antagonistically with name-mover heads, preventing the wrong entity from appearing. Essential for disambiguation when multiple entities are candidates. Implements a form of negative selection, ruling out incorrect options. Part of the "inhibition" mechanism that prevents hallucination and maintains accuracy.
-\end{functiondesc} \begin{attentionbox}
+\label{head:s-inhibition}
+
+\noindent\depthinfo{0.62--0.82} | \litnames{S-inhibition head, inhibition head, suppression head}
+
+\begin{functiondesc}
+Suppress incorrect or contextually inappropriate entities from being generated. Named ``S-inhibition'' from IOI research where these heads inhibit the subject (S) when the indirect object (IO) should be output. These heads work antagonistically with name-mover heads, preventing the wrong entity from appearing. Essential for disambiguation when multiple entities are candidates, they implement a form of negative selection, ruling out incorrect options. Part of the inhibition mechanism that prevents hallucination and maintains accuracy.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Entities that should NOT be output (contextually inappropriate)}\\
 \attweak{Correct entities, absent entities}\\
 \attreacts{Competing candidates, context requiring disambiguation}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Increased entity confusion and incorrect selections. increase in wrong entity predictions. Model may output recently mentioned but contextually wrong entities. Critical for accuracy in ambiguous contexts.
-\end{ablationbox} \begin{examplebox}
-\exinput{"Alice gave the book to Bob. Then Alice..."}\\
-\exbehavior{Inhibits "Bob" from being output after "Alice" (subject position)}\\
-\exeffect{Prevents incorrect continuation like "Alice Bob..."}
-\end{examplebox} \headfooter{\statuswell}{name-mover (L), copy-suppression (L), duplicate-token (M)} %-----------------------------------------------------------------------------
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in entity confusion and incorrect selections. Model may output recently mentioned but contextually wrong entities. Critical for accuracy in ambiguous contexts.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{``Alice gave the book to Bob. Then Alice...''}\\
+\exbehavior{Inhibit ``Bob'' from being output after ``Alice'' (subject position)}\\
+\exeffect{Prevent incorrect continuation like ``Alice Bob...''}
+\end{examplebox}
+
+\headfooter{\statuswell}{name-mover (L), copy-suppression (L), duplicate-token (M)}
+
+%-----------------------------------------------------------------------------
 \subsubsection{(L) Copy-Suppression Heads}
-\label{head:copy-suppression} \noindent\depthinfo{0.65--0.85} | \litnames{copy-suppression head, suppression head, anti-copy head} \begin{functiondesc}
-Prevents inappropriate copying or repetition of content. Works to avoid degenerate behaviors like endless repetition loops or copy-pasting irrelevant context. Particularly important for maintaining output diversity and preventing model collapse into repetitive patterns. Can suppress both exact copies and near-copies. Complements S-inhibition but focuses on broader pattern suppression rather than specific entity blocking. Balances between useful recall (via name-movers) and inappropriate copying.
-\end{functiondesc} \begin{attentionbox}
+\label{head:copy-suppression}
+
+\noindent\depthinfo{0.65--0.85} | \litnames{copy-suppression head, suppression head, anti-copy head}
+
+\begin{functiondesc}
+Prevent inappropriate copying or repetition of content. These heads work to avoid degenerate behaviors like endless repetition loops or copy-pasting irrelevant context. Particularly important for maintaining output diversity and preventing model collapse into repetitive patterns, they suppress both exact copies and near-copies. These heads complement S-inhibition but focus on broader pattern suppression rather than specific entity blocking, balancing between useful recall (via name-movers) and inappropriate copying.
+\end{functiondesc}
+
+\begin{attentionbox}
 \attstrong{Recently generated content, repetitive patterns}\\
 \attweak{Novel content, first mentions}\\
 \attreacts{Repetition detection, copy patterns, output diversity requirements}
-\end{attentionbox} \begin{ablationbox}
-\textbf{Expected ablation:} Increased repetition and copying errors. increase in unwanted repetition. Model may fall into repetitive loops or copy inappropriate context. Output diversity decreases.
-\end{ablationbox} \begin{examplebox}
-\exinput{[Model internally generating: "The cat sat. The cat sat. The cat..."]}\\
-\exbehavior{Detects repetitive pattern, suppresses continued copying}\\
-\exeffect{Breaks repetition loop, generates novel continuation instead}
-\end{examplebox} \headfooter{\statuswell}{S-inhibition (L), name-mover (L), duplicate-token (M)}
+\end{attentionbox}
+
+\begin{ablationbox}
+\textbf{Expected ablation:} Moderate increase in repetition and copying errors. Model may fall into repetitive loops or copy inappropriate context. Output diversity decreases.
+\end{ablationbox}
+
+\begin{examplebox}
+\exinput{[Model internally generating: ``The cat sat. The cat sat. The cat...'']}\\
+\exbehavior{Detect repetitive pattern, suppress continued copying}\\
+\exeffect{Break repetition loop, generate novel continuation instead}
+\end{examplebox}
+
+\headfooter{\statuswell}{S-inhibition (L), name-mover (L), duplicate-token (M)}
