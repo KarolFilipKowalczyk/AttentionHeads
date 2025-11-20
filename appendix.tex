@@ -32,29 +32,30 @@ chunk-organization head & (L) \hyperref[head:structural-block]{Structural-block 
 classification head & (E) \hyperref[head:safety-classification]{Safety-classification head} \\
 code-block head & (L) \hyperref[head:structural-block]{Structural-block head} \\
 code-fence head & (L) \hyperref[head:structural-block]{Structural-block head} \\
-cognitive-mode head & (F) \hyperref[head:reasoning-mode]{Reasoning-mode head} \\
-cognitive-oversight head & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
+cognitive-mode head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+cognitive-oversight head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
 command head & (E) \hyperref[head:instruction]{Instruction head} \\
 completion head & (F) \hyperref[head:completion-stabilization]{Completion-stabilization head} \\
 completion-stabilization head & (F) \hyperref[head:completion-stabilization]{Completion-stabilization head} \\
-content-filter head & (E) \hyperref[head:sensitive-content]{Sensitive-content head} \\
+content-filter head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 contextual-position head & (M) \hyperref[head:relative-position]{Relative-position head} \\
 continuation head & (M) \hyperref[head:algorithmic-continuation]{Algorithmic continuation head} \\
 copy head & (M) \hyperref[head:duplicate-token]{Duplicate-token head} / (L) \hyperref[head:name-mover]{Name-mover head} \\
 coref head & (M) \hyperref[head:coreference]{Coreference head} \\
 coreference head & (M) \hyperref[head:coreference]{Coreference head} \\
 delimiter head & (E) \hyperref[head:delimiter]{Delimiter head} \\
-detection head & (E) \hyperref[head:sensitive-content]{Sensitive-content head} \\
+detection head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 directive head & (E) \hyperref[head:instruction]{Instruction head} \\
 dispatch head & (L) \hyperref[head:router]{Router head} \\
 distance head & (M) \hyperref[head:relative-position]{Relative-position head} \\
 duplicate-token head & (M) \hyperref[head:duplicate-token]{Duplicate-token head} \\
+empathy head & (F) \hyperref[head:refusal-modulation]{Refusal-modulation heads} \\
 entity head & (M) \hyperref[head:entity]{Entity head} \\
 entity-linking head & (M) \hyperref[head:entity]{Entity head} \\
 enumeration head & (L) \hyperref[head:list-structure]{List-structure head} \\
 fact head & (M) \hyperref[head:fact]{Fact head} \\
 fence head & (L) \hyperref[head:structural-block]{Structural-block head} \\
-field-association head & (L) \hyperref[head:key-value]{Keyâ€“value pairing head} \\
+field-association head & (L) \hyperref[head:key-value]{Key--value pairing head} \\
 filter head & (M) \hyperref[head:topic-relevance]{Topic-relevance head} \\
 focus head & (L) \hyperref[head:focus]{Focus head} \\
 format-consistency head & (F) \hyperref[head:format-consistency]{Format-consistency head} \\
@@ -64,8 +65,8 @@ formality head & (L) \hyperref[head:politeness]{Politeness head} \\
 full-context head & (F) \hyperref[head:global-attention]{Global-attention head} \\
 global-attention head & (F) \hyperref[head:global-attention]{Global-attention head} \\
 guideline-enforcement head & (F) \hyperref[head:brand-compliance]{Brand-compliance head} \\
-hate-speech detector & (E) \hyperref[head:toxicity]{Toxicity head} \\
-hazard head & (E) \hyperref[head:hazard-topic]{Hazard-topic head} \\
+hate-speech detector & (E) \hyperref[head:content-detection]{Content-detection heads} \\
+hazard head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 helper-role head & (L) \hyperref[head:persona]{Persona head} \\
 ICL head & (M) \hyperref[head:induction]{Induction head} \\
 implicit-RAG head & (F) \hyperref[head:implicit-rag]{Implicit-RAG routing head} \\
@@ -75,7 +76,7 @@ instruction head & (E) \hyperref[head:instruction]{Instruction head} \\
 intent head & (M) \hyperref[head:task-mode]{Task-mode head} \\
 itemization head & (L) \hyperref[head:list-structure]{List-structure head} \\
 JSON-format head & (L) \hyperref[head:output-schema]{Output-schema head} \\
-key-value head & (L) \hyperref[head:key-value]{Keyâ€“value pairing head} \\
+key-value head & (L) \hyperref[head:key-value]{Key--value pairing head} \\
 knowledge-routing head & (F) \hyperref[head:implicit-rag]{Implicit-RAG routing head} \\
 layout head & (E) \hyperref[head:delimiter]{Delimiter head} \\
 list head & (L) \hyperref[head:list-structure]{List-structure head} \\
@@ -84,8 +85,8 @@ local pattern head & (E) \hyperref[head:local-pattern]{Local pattern head} \\
 long-range head & (M) \hyperref[head:long-range-dependency]{Long-range dependency head} \\
 markdown head & (L) \hyperref[head:list-structure]{List-structure head} \\
 mention head & (E) \hyperref[head:reference-resolution]{Reference resolution head} \\
-meta-CoT head & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
-meta-reasoning monitor & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
+meta-CoT head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+meta-reasoning monitor & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
 mode head & (M) \hyperref[head:task-mode]{Task-mode head} / (M) \hyperref[head:mode-switch]{Mode-switch head} \\
 model-identity head & (L) \hyperref[head:persona]{Persona head} \\
 model-info head & (L) \hyperref[head:persona]{Persona head} \\
@@ -95,7 +96,7 @@ name head & (M) \hyperref[head:entity]{Entity head} \\
 name mover head & (L) \hyperref[head:name-mover]{Name-mover head} \\
 name-linking head & (M) \hyperref[head:entity]{Entity head} \\
 narrative-style head & (M) \hyperref[head:tone]{Tone head} \\
-object head & (L) \hyperref[head:key-value]{Keyâ€“value pairing head} \\
+object head & (L) \hyperref[head:key-value]{Key--value pairing head} \\
 offset head & (E) \hyperref[head:previous-token]{Previous-token head} \\
 output-format head & (L) \hyperref[head:output-schema]{Output-schema head} \\
 output-schema head & (L) \hyperref[head:output-schema]{Output-schema head} \\
@@ -106,7 +107,7 @@ pivot head & (L) \hyperref[head:strategy]{Strategy head} \\
 planning head & (L) \hyperref[head:strategy]{Strategy head} \\
 polish head & (F) \hyperref[head:format-consistency]{Format-consistency head} \\
 politeness head & (L) \hyperref[head:politeness]{Politeness head} \\
-politeness-in-refusal head & (F) \hyperref[head:tone-softening]{Tone-softening head} \\
+politeness-in-refusal head & (F) \hyperref[head:refusal-modulation]{Refusal-modulation heads} \\
 position-offset head & (M) \hyperref[head:relative-position]{Relative-position head} \\
 previous-token head & (E) \hyperref[head:previous-token]{Previous-token head} \\
 procedural head & (F) \hyperref[head:step-by-step]{Step-by-step head} \\
@@ -118,10 +119,10 @@ punctuation head & (E) \hyperref[head:delimiter]{Delimiter head} \\
 python head & (L) \hyperref[head:structural-block]{Structural-block head} \\
 quoting head & (L) \hyperref[head:structural-block]{Structural-block head} \\
 rag-routing head & (F) \hyperref[head:implicit-rag]{Implicit-RAG routing head} \\
-reasoning head & (F) \hyperref[head:reasoning-mode]{Reasoning-mode head} \\
-reasoning-mode head & (F) \hyperref[head:reasoning-mode]{Reasoning-mode head} \\
-reasoning-quality head & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
-reasoning-reflection head & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
+reasoning head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+reasoning-mode head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+reasoning-quality head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+reasoning-reflection head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
 redirect head & (F) \hyperref[head:redirect]{Redirect head} \\
 reference head & (E) \hyperref[head:reference-resolution]{Reference resolution head} \\
 refusal head & (F) \hyperref[head:refusal]{Refusal head} \\
@@ -135,7 +136,7 @@ retrieval head & (M) \hyperref[head:schema-retriever]{Schema retriever head} \\
 retrieval-simulation head & (F) \hyperref[head:implicit-rag]{Implicit-RAG routing head} \\
 revision head & (F) \hyperref[head:format-consistency]{Format-consistency head} \\
 rewrite head & (F) \hyperref[head:format-consistency]{Format-consistency head} \\
-risk head & (E) \hyperref[head:hazard-topic]{Hazard-topic head} \\
+risk head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 role head & (L) \hyperref[head:persona]{Persona head} \\
 router head & (L) \hyperref[head:router]{Router head} \\
 S-inhibition head & (L) \hyperref[head:s-inhibition]{S-inhibition head} \\
@@ -153,7 +154,7 @@ segment-builder head & (L) \hyperref[head:structural-block]{Structural-block hea
 self-awareness head & (L) \hyperref[head:persona]{Identity head} \\
 self-description head & (L) \hyperref[head:persona]{Identity head} / (L) \hyperref[head:persona]{Self-description head} \\
 self-reference head & (L) \hyperref[head:persona]{Self-description head} \\
-sensitive-content head & (E) \hyperref[head:sensitive-content]{Sensitive-content head} \\
+sensitive-content head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 sentiment-modulation head & (M) \hyperref[head:tone]{Tone head} \\
 separator head & (E) \hyperref[head:delimiter]{Delimiter head} \\
 sequence head & (M) \hyperref[head:algorithmic-continuation]{Algorithmic continuation head} \\
@@ -178,6 +179,7 @@ style-guide head & (F) \hyperref[head:brand-compliance]{Brand-compliance head} \
 subject head & (M) \hyperref[head:topic-relevance]{Topic-relevance head} \\
 summary-attention head & (F) \hyperref[head:global-attention]{Global-attention head} \\
 suppression head & (L) \hyperref[head:s-inhibition]{S-inhibition head} / (L) \hyperref[head:copy-suppression]{Copy-suppression head} \\
+supportive-refusal head & (F) \hyperref[head:refusal-modulation]{Refusal-modulation heads} \\
 switch head & (M) \hyperref[head:mode-switch]{Mode-switch head} \\
 system head & (E) \hyperref[head:system-prompt]{System-prompt head} \\
 system-prompt head & (E) \hyperref[head:system-prompt]{System-prompt head} \\
@@ -186,13 +188,13 @@ task-mode head & (M) \hyperref[head:task-mode]{Task-mode head} \\
 task-routing head & (L) \hyperref[head:router]{Router head} \\
 template head & (M) \hyperref[head:schema-retriever]{Schema retriever head} \\
 termination head & (F) \hyperref[head:completion-stabilization]{Completion-stabilization head} \\
-thinking-style head & (F) \hyperref[head:reasoning-mode]{Reasoning-mode head} \\
-thought-monitoring head & (F) \hyperref[head:meta-reasoning]{Meta-reasoning head} \\
+thinking-style head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
+thought-monitoring head & (F) \hyperref[head:reasoning-oversight]{Reasoning-oversight heads} \\
 tone head & (M) \hyperref[head:tone]{Tone head} \\
-tone-softening head & (F) \hyperref[head:tone-softening]{Tone-softening head} \\
+tone-softening head & (F) \hyperref[head:refusal-modulation]{Refusal-modulation heads} \\
 topic head & (M) \hyperref[head:topic-relevance]{Topic-relevance head} \\
-toxic-content head & (E) \hyperref[head:toxicity]{Toxicity head} \\
-toxicity head & (E) \hyperref[head:toxicity]{Toxicity head} \\
+toxic-content head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
+toxicity head & (E) \hyperref[head:content-detection]{Content-detection heads} \\
 tracking head & (M) \hyperref[head:state-tracking]{State-tracking head} \\
 transition head & (M) \hyperref[head:mode-switch]{Mode-switch head} \\
 voice head & (M) \hyperref[head:tone]{Tone head} \\

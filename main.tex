@@ -13,7 +13,7 @@
 \maketitle
 
 \begin{abstract}
-Large language models have reached remarkable levels of reasoning, safety alignment, and structural understanding. Yet their internal workings remain difficult to interpret. One of the most productive areas in transparency research is the study of \emph{attention heads}â€”small components inside transformer layers that develop specialized behaviors. Over time, informal naming conventions have emerged in the interpretability community: \emph{induction heads}, \emph{name mover heads}, \emph{refusal heads}, and many others. These names are intuitive but inconsistent, overlapping, or ambiguous.
+Large language models have reached remarkable levels of reasoning, safety alignment, and structural understanding. Yet their internal workings remain difficult to interpret. One of the most productive areas in transparency research is the study of \emph{attention heads}---small components inside transformer layers that develop specialized behaviors. Over time, informal naming conventions have emerged in the interpretability community: \emph{induction heads}, \emph{name mover heads}, \emph{refusal heads}, and many others. These names are intuitive but inconsistent, overlapping, or ambiguous.
 
 This work proposes a unified naming convention for attention heads. We introduce: (1) a four-level depth model (Early, Middle, Late, Final), (2) a stack-based functional grouping of attention behaviors, (3) canonical names for head types, and (4) an alphabetical cross-reference table translating historical terms to standardized ones. This naming convention is descriptive rather than prescriptive: it captures how heads tend to behave today, while remaining flexible for future architectures.
 \end{abstract}
@@ -29,7 +29,7 @@ This work proposes a unified naming convention for attention heads. We introduce
 \label{sec:introduction}
 
 \subsection{Motivation}
-Large language models (LLMs) have achieved remarkable performance across diverse tasks, yet understanding their internal mechanisms remains a critical challenge. Attention headsâ€”the basic computational units within transformer architecturesâ€”have emerged as key objects of study in mechanistic interpretability research.
+Large language models (LLMs) have achieved remarkable performance across diverse tasks, yet understanding their internal mechanisms remains a critical challenge. Attention heads---the basic computational units within transformer architectures---have emerged as key objects of study in mechanistic interpretability research.
 
 \subsection{The Problem of Inconsistent Naming}
 The interpretability community has identified numerous specialized attention head types: \emph{induction heads}, \emph{name mover heads}, \emph{refusal heads}, \emph{delimiter heads}, \emph{JSON heads}, and many others. However, these naming conventions suffer from several problems. They are \textbf{inconsistent}, with the same head type appearing under multiple names across papers. They are \textbf{ambiguous}, as a single name may refer to different behaviors in different contexts. They are \textbf{fragmented}, lacking any unified framework that connects related head types. Finally, they are \textbf{unscalable}, as naming schemes don't generalize across model architectures. This fragmentation makes replication difficult, hinders cross-paper comparison, and complicates the annotation of interpretability datasets.
@@ -37,15 +37,21 @@ The interpretability community has identified numerous specialized attention hea
 \subsection{Goals of This Work}
 We propose a unified naming convention that standardizes terminology across research groups, provides a functional taxonomy grounded in empirical observations, describes head behavior consistently across architectures, and creates a stable vocabulary that can evolve as models evolve.
 
+\subsection{Circuits, Stacks, and Simplification}
+
+This taxonomy uses the concept of \emph{stacks} as a practical organizational framework, but it's important to understand what this represents. In reality, attention heads work in complex \emph{circuits}â€”groups of heads across multiple layers that cooperate to implement behaviors through multi-level processing \cite{elhage2021mathematical,wang2022interpretability}. 
+
+The \emph{stack} abstraction simplifies this complexity for communication purposes. Rather than mapping every circuit connection, we group heads by their primary functional contribution. This makes the taxonomy more accessible while acknowledging that real model behavior involves intricate cross-layer interactions that our linear organization cannot fully capture.
+
 \subsection{Structure of This Document}
-We begin by reviewing prior work and motivation (\S\ref{sec:background}). We then introduce our depth model (\S\ref{sec:depth}) and stack-based organization (\S\ref{sec:stacks}). The core contribution is a comprehensive catalog of attention head types organized by functional stack (\S\ref{sec:catalog}). We conclude with discussion (\S\ref{sec:discussion}) and future directions (\S\ref{sec:conclusion}).
+We begin by reviewing prior work and motivation (\S\ref{sec:background}). We then introduce our depth model (\S\ref{sec:depth}) and stack-based organization (\S\ref{sec:stacks}), including how stacks simplify the underlying circuit-level complexity. The core contribution is a comprehensive catalog of attention head types organized by functional stack (\S\ref{sec:catalog}). We conclude with discussion (\S\ref{sec:discussion}) and future directions (\S\ref{sec:conclusion}).
 
 %=============================================================================
 \section{Background}
 \label{sec:background}
 
 \subsection{Attention Heads and Functions}
-In transformer models \cite{vaswani2017attention}, attention heads perform focused computations over the token sequence. Individually simple, they nevertheless develop specialized behaviors such as pattern continuation and token induction, entity and dependency tracking, semantic filtering and hazard detection, routing and topic steering, enforcing structured output formats, and applying safety constraints \cite{elhage2021mathematical,olsson2022context}. These behaviors form \emph{circuits}â€”groups of heads working togetherâ€”as well as larger \emph{stacks} of related functionality.
+In transformer models \cite{vaswani2017attention}, attention heads perform focused computations over the token sequence. Individually simple, they nevertheless develop specialized behaviors such as pattern continuation and token induction, entity and dependency tracking, semantic filtering and hazard detection, routing and topic steering, enforcing structured output formats, and applying safety constraints \cite{elhage2021mathematical,olsson2022context}. These behaviors form \emph{circuits}---groups of heads working together---as well as larger \emph{stacks} of related functionality.
 
 \subsection{Why Naming Consistency Matters}
 Interpretability research suffers from fragmented terminology \cite{rai2024practical,zheng2025attention}. The same head type may appear under multiple names, while a single overloaded name may refer to unrelated behaviors across different papers. This makes replication, comparison, and annotation difficult. A consistent naming system improves clarity and precision in communication, strengthens cross-paper alignment and replication, helps index and organize interpretability datasets, and enables systematic mapping of circuits across models.
@@ -54,14 +60,14 @@ Interpretability research suffers from fragmented terminology \cite{rai2024pract
 Previous work has named heads based on behavior (induction, copy-suppression), formatting (JSON head, list head), signal source (delimiter head), role in circuits (name mover), or safety behavior (refusal, toxicity). These labels are often accurate but vary widely. This work unifies them under a systematic framework.
 
 %=============================================================================
-\section{Depth Model: Earlyâ€”Middleâ€”Lateâ€”Final}
+\section{Depth Model: Early---Middle---Late---Final}
 \label{sec:depth}
 
 \subsection{Rationale for Four Depth Categories}
 Although transformer models may have 12, 48, or 96 layers, functional behavior clusters reliably into four zones \cite{elhage2021mathematical,wang2022interpretability}. \textbf{Early layers (E)} handle token-level surface processing, boundary detection, and basic filtering. \textbf{Middle layers (M)} implement reasoning primitives, induction, and dependency tracking. \textbf{Late layers (L)} perform semantic integration, routing, and persona shaping. \textbf{Final layers (F)} enforce policy, safety modulation, and structured output. This structure holds across GPT, LLaMA, Claude, and other model families \cite{brown2020language,touvron2023llama,achiam2023gpt}.
 
 \subsection{Cross-Model Depth Examples}
-Using \emph{relative depth} (0.0â€“1.0) makes the taxonomy scale-free. For a 96-layer model, Early corresponds to layers 0â€“15 (relative depth 0.00â€“0.15), Middle to layers 15â€“50 (relative depth 0.15â€“0.52), Late to layers 50â€“85 (relative depth 0.52â€“0.88), and Final to layers 85â€“96 (relative depth 0.88â€“1.00).
+Using \emph{relative depth} (0.0--1.0) makes the taxonomy scale-free. For a 96-layer model, Early corresponds to layers 0--15 (relative depth 0.00--0.15), Middle to layers 15--50 (relative depth 0.15--0.52), Late to layers 50--85 (relative depth 0.52--0.88), and Final to layers 85--96 (relative depth 0.88--1.00).
 
 \subsection{Relative Depth Scaling}
 We express depth as a fraction of total model depth to enable cross-architecture comparison. A head at relative depth 0.40 occupies similar functional space whether in a 12-layer or 96-layer model.
@@ -74,7 +80,7 @@ We express depth as a fraction of total model depth to enable cross-architecture
 A \emph{stack} is a coherent group of head types that together implement a higher-level capability. Stacks reflect functional clustering observed in interpretability studies \cite{wang2022interpretability,olsson2022context}. Examples include the Reasoning \& Algorithmic Stack, Memory \& Dependency Stack, Safety Stack, and Output Formatting \& Rewrite Stack. Stacks are orthogonal to depth: a stack may span Early, Middle, Late, and Final layers.
 
 \subsection{Relationship Between Stacks and Depth}
-Although stacks represent functional groupings, different functions tend to appear at different depths. Early layers handle delimiters, content detection, and input conditioning. Middle layers implement reasoning, induction, and entity linking. Late layers manage narrative coherence, routing, and topic steering. Final layers enforce policy, formatting, rewriting, and safety compliance. This two-dimensional structureâ€”\emph{stack $\times$ depth}â€”forms the basis of our catalog.
+Although stacks represent functional groupings, different functions tend to appear at different depths. Early layers handle delimiters, content detection, and input conditioning. Middle layers implement reasoning, induction, and entity linking. Late layers manage narrative coherence, routing, and topic steering. Final layers enforce policy, formatting, rewriting, and safety compliance. This two-dimensional structure---\emph{stack $\times$ depth}---forms the basis of our catalog.
 
 %=============================================================================
 % CATALOG
@@ -83,11 +89,11 @@ Although stacks represent functional groupings, different functions tend to appe
 \section{Attention Head Catalog}
 \label{sec:catalog}
 
-This section presents a comprehensive catalog of attention head types, organized by functional stack. Each stack groups heads that contribute to a common high-level capability. Within each stack, heads are ordered by depth (Early â†’ Middle â†’ Late â†’ Final).
+This section presents a comprehensive catalog of attention head types, organized by functional stack. Each stack groups heads that contribute to a common high-level capability. Within each stack, heads are ordered by depth (Early  $\rightarrow$  Middle  $\rightarrow$  Late  $\rightarrow$  Final).
 
 \paragraph{Entry Format.} Each head entry includes:
 \begin{itemize}
-    \item \textbf{Depth range:} Typical relative depth (0.0â€“1.0) and layer locations
+    \item \textbf{Depth range:} Typical relative depth (0.0--1.0) and layer locations
     \item \textbf{Literature names:} Alternative names found in prior work
     \item \textbf{Function:} Core behavior and mechanism
     \item \textbf{Attention pattern:} What the head attends to

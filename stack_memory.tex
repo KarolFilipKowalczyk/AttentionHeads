@@ -1,145 +1,73 @@
 %=============================================================================
 \subsection{Memory \& Dependency Stack}
-\label{sec:memory-stack}
-
-\textbf{Stack overview:} These heads track references, resolve coreferences, and maintain dependency relationships across the input sequence. They enable the model to understand which entities are being discussed and how they relate to each other.
-
-%-----------------------------------------------------------------------------
-\subsubsection{(E) Reference Resolution Head}
-\label{head:reference-resolution}
-
-\noindent\depthinfo{0.08--0.25} | \litnames{reference head, pronoun head, anaphora head, mention head}
-
-\begin{functiondesc}
+\label{sec:memory-stack} \textbf{Stack overview:} These heads track references, resolve coreferences, and maintain dependency relationships across the input sequence. They enable the model to understand which entities are being discussed and how they relate to each other. %-----------------------------------------------------------------------------
+\subsubsection{(E) Reference Resolution Heads}
+\label{head:reference-resolution} \noindent\depthinfo{0.08--0.25} | \litnames{reference head, pronoun head, anaphora head, mention head} \begin{functiondesc}
 Performs early-stage reference resolution including pronouns, definite descriptions, demonstratives, and possessives. Identifies pronouns (he, she, it, they) and other referring expressions, attending to potential referents that match in number, gender, and contextual appropriateness. Establishes initial binding signals that are refined by later coreference heads. Operates primarily on syntactic and positional cues rather than deep semantic understanding. Forms the foundation for more sophisticated reference resolution in deeper layers. Broader than pure pronoun resolution, handling various reference forms including "the president", "this approach", and "her book".
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Pronouns to recent nouns, definite descriptions to referents, demonstratives to antecedents}\\
 \attweak{Distant nouns, semantically incompatible referents, first mentions}\\
 \attreacts{Pronoun presence, definite articles, demonstratives, possessives, noun-pronoun proximity}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Degraded reference resolution, particularly for simple local cases and various referring expressions. ~20-30\% increase in reference resolution errors. Later coreference heads can partially compensate but with reduced accuracy. Particularly impacts handling of definite descriptions and complex referring patterns.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Degraded reference resolution, particularly for simple local cases and various referring expressions. increase in reference resolution errors. Later coreference heads can partially compensate but with reduced accuracy. Particularly impacts handling of definite descriptions and complex referring patterns.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Alice met Bob. She smiled. The researcher continued."}\\
 \exbehavior{"She" attends to "Alice" based on gender and recency; "The researcher" attends to appropriate prior mention}\\
 \exeffect{Establishes initial bindings that later heads refine}
-\end{examplebox}
-
-\headfooter{\statuswell}{coreference (M), entity (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Coreference Head}
-\label{head:coreference}
-
-\noindent\depthinfo{0.35--0.60} | \litnames{coreference head, coref head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{coreference (M), entity (M)} %-----------------------------------------------------------------------------
+\subsubsection{(M) Coreference Heads}
+\label{head:coreference} \noindent\depthinfo{0.35--0.60} | \litnames{coreference head, coref head} \begin{functiondesc}
 Performs sophisticated coreference resolution, determining when different expressions refer to the same entity. Integrates signals from early reference resolution heads with semantic understanding to resolve ambiguous cases. Can handle complex phenomena like split antecedents, bridging references, and discourse-level coreference. Critical for maintaining entity tracking across long contexts and understanding narrative structure. Represents one of the core NLP capabilities in transformers.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Coreferential mentions regardless of form}\\
 \attweak{Different entities, first mentions without antecedents}\\
 \attreacts{Semantic compatibility, discourse coherence, entity properties}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Significant degradation (30-50\%) in coreference resolution tasks. Model loses ability to track entities across complex reference chains. Particularly impacts question answering and summarization.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Significant degradation in coreference resolution tasks. Model loses ability to track entities across complex reference chains. Particularly impacts question answering and summarization.
+\end{ablationbox} \begin{examplebox}
 \exinput{"The CEO announced changes. Later, the executive clarified. She emphasized..."}\\
 \exbehavior{Links all three mentions (CEO, executive, She) to same entity}\\
 \exeffect{Maintains consistent entity representation throughout discourse}
-\end{examplebox}
-
-\headfooter{\statuswell}{reference-resolution (E), entity (M), bridging (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Long-Range Dependency Head}
-\label{head:long-range-dependency}
-
-\noindent\depthinfo{0.40--0.65} | \litnames{long-range head, dependency head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{reference-resolution (E), entity (M), bridging (M)} %-----------------------------------------------------------------------------
+\subsubsection{(M) Long-Range Dependency Heads}
+\label{head:long-range-dependency} \noindent\depthinfo{0.40--0.65} | \litnames{long-range head, dependency head} \begin{functiondesc}
 Tracks long-range syntactic and semantic dependencies across distant parts of the sequence. Unlike local attention patterns, this head maintains connections between elements separated by many tokens (20-100+). Essential for understanding complex sentences, nested structures, and discourse relations. Implements the key advantage of transformers over RNNs: direct long-distance connections without degradation. Can maintain multiple simultaneous long-range connections.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Syntactically or semantically related distant tokens}\\
 \attweak{Immediately adjacent tokens, unrelated distant content}\\
 \attreacts{Nested structures, long-distance agreement, discourse relations}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Degradation in handling complex sentences and long-range relationships. ~25-40\% performance loss on tasks requiring long-distance reasoning. Particularly impacts nested structures and long documents.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Degradation in handling complex sentences and long-range relationships. performance loss on tasks requiring long-distance reasoning. Particularly impacts nested structures and long documents.
+\end{ablationbox} \begin{examplebox}
 \exinput{"The book [that Alice mentioned [that Bob recommended]] was excellent."}\\
 \exbehavior{"was" attends back to "book" across nested relative clauses}\\
 \exeffect{Maintains correct subject-verb agreement despite intervening material}
-\end{examplebox}
-
-\headfooter{\statusobs}{coreference (M), state-tracking (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Bridging Head}
-\label{head:bridging}
-
-\noindent\depthinfo{0.45--0.68} | \litnames{bridging head, associative reference head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statusobs}{coreference (M), state-tracking (M)} %-----------------------------------------------------------------------------
+\subsubsection{(M) Bridging Heads}
+\label{head:bridging} \noindent\depthinfo{0.45--0.68} | \litnames{bridging head, associative reference head} \begin{functiondesc}
 Resolves bridging references where the connection between mentions requires inferencing based on world knowledge. For example, connecting "the car" to "the steering wheel" (part-whole), or "the building" to "the architect" (role relation). More sophisticated than direct coreference, requiring semantic knowledge about typical relationships. Essential for understanding implicit connections in discourse. Bridges gaps that aren't explicit in the text.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Associatively related entities (part-whole, role, causation)}\\
 \attweak{Unrelated entities, explicit coreference}\\
 \attreacts{Implicit relationships, world knowledge, typical associations}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Loss of implicit reference resolution. ~15-30\% degradation on tasks requiring inference-based connections. Model becomes more literal, missing implicit relationships. Discourse coherence suffers.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Loss of implicit reference resolution. degradation on tasks requiring inference-based connections. Model becomes more literal, missing implicit relationships. Discourse coherence suffers.
+\end{ablationbox} \begin{examplebox}
 \exinput{"We entered the house. The door was painted blue."}\\
 \exbehavior{"The door" attends to "house" (part-whole bridging)}\\
 \exeffect{Understands "the door" refers to the house's door, not a random door}
-\end{examplebox}
-
-\headfooter{\statusobs}{coreference (M), entity (M), fact (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) State-Tracking Head}
-\label{head:state-tracking}
-
-\noindent\depthinfo{0.48--0.70} | \litnames{state-tracking head, tracking head, state head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statusobs}{coreference (M), entity (M), fact (M)} %-----------------------------------------------------------------------------
+\subsubsection{(M) State-Tracking Heads}
+\label{head:state-tracking} \noindent\depthinfo{0.48--0.70} | \litnames{state-tracking head, tracking head, state head} \begin{functiondesc}
 Maintains and updates representations of changing states across the sequence. Tracks how entity properties evolve (e.g., location changes, status updates, accumulating information). Essential for understanding narratives where situations change over time. Can maintain multiple simultaneous state representations for different entities. Integrates new information with existing state representations to track dynamic situations.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{State-changing events, current state mentions, entity properties}\\
 \attweak{Static descriptions, unchanging background information}\\
 \attreacts{Verbs of change, state transitions, property modifications}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Difficulty tracking state changes across sequences. ~20-35\% degradation on tasks requiring temporal reasoning or state tracking. Narratives become harder to follow when states evolve.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Difficulty tracking state changes across sequences. degradation on tasks requiring temporal reasoning or state tracking. Narratives become harder to follow when states evolve.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Alice was in NYC. She flew to Paris. She then visited..."}\\
-\exbehavior{Updates Alice's location state: NYC → Paris}\\
+\exbehavior{Updates Alice's location state: NYC $\rightarrow$ Paris}\\
 \exeffect{Correctly contextualizes "visited" as occurring in Paris}
-\end{examplebox}
-
-\headfooter{\statusobs}{coreference (M), long-range-dependency (M)}
+\end{examplebox} \headfooter{\statusobs}{coreference (M), long-range-dependency (M)}

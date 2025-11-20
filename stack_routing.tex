@@ -1,145 +1,73 @@
 %=============================================================================
 \subsection{Routing \& Relevance Stack}
-\label{sec:routing-stack}
-
-\textbf{Stack overview:} This stack determines which parts of the input are relevant to the current task and routes attention accordingly. These heads filter information, focus on salient content, and manage global context.
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Topic-Relevance Head}
-\label{head:topic-relevance}
-
-\noindent\depthinfo{0.35--0.60} | \litnames{topic-relevance head, relevance head, topic head, salience head, filter head, subject head, domain head}
-
-\begin{functiondesc}
-Identifies the primary topic or subject matter and determines which parts of the input context are relevant to the current generation task. Filters out irrelevant information while highlighting salient content that should influence output. Operates by computing relevance scores based on semantic similarity, task alignment, and topical coherence. Maintains topic coherence across generation by attending to topic-establishing phrases and domain indicators. Essential for handling long contexts where most information may not be pertinent to the immediate query. Works early enough to guide downstream attention but late enough to understand task requirements. Reduces noise and improves focus on task-relevant material. Helps ensure responses stay on-topic and maintains thematic consistency.
-\end{functiondesc}
-
-\begin{attentionbox}
+\label{sec:routing-stack} \textbf{Stack overview:} This stack determines which parts of the input are relevant to the current task and routes attention accordingly. These heads filter information, focus on salient content, and manage global context. %-----------------------------------------------------------------------------
+\subsubsection{(M) Topic-Relevance Heads}
+\label{head:topic-relevance} \noindent\depthinfo{0.35--0.60} | \litnames{topic-relevance head, relevance head, topic head, salience head, filter head, subject head, domain head} \begin{functiondesc}
+Identifies the primary topic or subject matter and determines which parts of the input context are relevant to the current generation task. Filters out irrelevant information while highlighting salient content that should influence output. Operates by computing relevance scores based on semantic similarity, task alignment, and topical coherence. Maintains topic coherence across generation by attending to topic-establishing phrases and domain indicators. Important for handling long contexts where most information may not be pertinent to the immediate query. Works early enough to guide downstream attention but late enough to understand task requirements. Reduces noise and improves focus on task-relevant material. Promotes on-topic responses and thematic consistency.
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Task-relevant content, query-related information, topically aligned tokens, topic indicators, subject headings, domain markers, thematic keywords}\\
 \attweak{Off-topic material, tangential content, unrelated context, function words, generic content, structural tokens}\\
 \attreacts{Semantic relevance, topical alignment, task-content matching, topic transitions, subject establishment, domain signals}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Reduced focus on relevant information with increased topic drift (~20-30\% degradation in context filtering and ~15-25\% reduction in thematic coherence). Model more easily distracted by irrelevant content. Longer contexts show greater impact. May include off-topic information in responses or miss key relevant details. Responses may wander off-topic or fail to maintain consistent subject focus. Multi-turn conversations show more topic inconsistency. Domain-specific framing becomes less reliable.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Reduced focus on relevant information with increased topic drift (degradation in context filtering and reduction in thematic coherence). Model more easily distracted by irrelevant content. Longer contexts show greater impact. May include off-topic information in responses or miss key relevant details. Responses may wander off-topic or fail to maintain consistent subject focus. Multi-turn conversations show more topic inconsistency. Domain-specific framing becomes less reliable.
+\end{ablationbox} \begin{examplebox}
 \exinput{"[Long document about cars, climate, and history] What caused the 2008 financial crisis? Let's discuss quantum entanglement. How does it relate to..."}\\
 \exbehavior{Attends to query, marks financial/economic content as relevant, de-emphasizes cars/climate; Identifies "quantum entanglement" as primary topic, maintains physics domain framing}\\
 \exeffect{Response focuses on pertinent economic information, ignoring unrelated context; Subsequent responses stay within quantum physics domain rather than drifting to unrelated topics}
-\end{examplebox}
-
-\headfooter{\statuswell}{focus (L), router (L), entity (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(L) Focus Head}
-\label{head:focus}
-
-\noindent\depthinfo{0.65--0.80} | \litnames{focus head, attention-routing head, spotlight head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{focus (L), router (L), entity (M)} %-----------------------------------------------------------------------------
+\subsubsection{(L) Focus Heads}
+\label{head:focus} \noindent\depthinfo{0.65--0.80} | \litnames{focus head, attention-routing head, spotlight head} \begin{functiondesc}
 Concentrates attention on the most salient elements for the current generation step. Implements dynamic focus allocation by suppressing less important content and amplifying critical information. More selective than topic-relevance heads, operating at higher specificity to determine exactly which tokens should influence the next token prediction. Can shift focus as generation proceeds, moving attention between different aspects of the context. Important for maintaining coherent narrative flow and ensuring responses address the most important aspects of queries.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Currently salient tokens, query-critical content, immediate context for next token}\\
 \attweak{Background information, previously-processed content, low-priority details}\\
 \attreacts{Query emphasis, current generation needs, token-specific relevance}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Less targeted responses (~25-35\% reduction in focus precision). Model may give equal weight to important and peripheral information. Answers become more diffuse, less direct. Reduced ability to prioritize key information in complex contexts.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Less targeted responses ( reduction in focus precision). Model may give equal weight to important and peripheral information. Answers become more diffuse, less direct. Reduced ability to prioritize key information in complex contexts.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Among all these details, what is the MAIN cause of the problem?"}\\
 \exbehavior{Attends strongly to "MAIN cause", focuses on causal information, suppresses secondary details}\\
 \exeffect{Response directly addresses primary cause rather than listing all contributing factors}
-\end{examplebox}
-
-\headfooter{\statuswell}{topic-relevance (M), router (L)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(L) Router Head}
-\label{head:router}
-
-\noindent\depthinfo{0.70--0.85} | \litnames{router head, dispatch head, task-routing head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{topic-relevance (M), router (L)} %-----------------------------------------------------------------------------
+\subsubsection{(L) Router Heads}
+\label{head:router} \noindent\depthinfo{0.70--0.85} | \litnames{router head, dispatch head, task-routing head} \begin{functiondesc}
 Routes different types of queries to appropriate processing strategies or knowledge domains. Acts as a dispatcher that recognizes query type (factual, creative, analytical, procedural) and biases processing toward suitable approaches. Can activate different downstream heads based on task classification. Similar to mixture-of-experts routing but at the attention level. Important for multi-capability models that need to handle diverse query types with different processing requirements. Enables dynamic strategy selection based on input characteristics.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Query-type indicators, task markers, domain signals, instruction verbs}\\
 \attweak{Content details, specific entities, output tokens}\\
 \attreacts{Task classification cues, query structure, capability requirements}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Suboptimal strategy selection (~20-30\% reduction in task-appropriate processing). Model may use creative approaches for factual queries or analytical methods for creative tasks. Reduced specialization in handling different query types.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Suboptimal strategy selection ( reduction in task-appropriate processing). Model may use creative approaches for factual queries or analytical methods for creative tasks. Reduced specialization in handling different query types.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Calculate the compound interest vs. Write a poem about compound interest"}\\
 \exbehavior{Routes first to mathematical processing, second to creative generation}\\
 \exeffect{Appropriate strategy activation: calculation for first, literary devices for second}
-\end{examplebox}
-
-\headfooter{\statusobs}{focus (L), mode-switch (M), instruction (E)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(F) Global-Attention Head}
-\label{head:global-attention}
-
-\noindent\depthinfo{0.88--0.96} | \litnames{global-attention head, full-context head, summary-attention head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statusobs}{focus (L), mode-switch (M), instruction (E)} %-----------------------------------------------------------------------------
+\subsubsection{(F) Global-Attention Heads}
+\label{head:global-attention} \noindent\depthinfo{0.88--0.96} | \litnames{global-attention head, full-context head, summary-attention head} \begin{functiondesc}
 Maintains broad attention over the entire context to integrate global information in final generation stages. Unlike focused or selective attention heads, this head attends widely to ensure the complete picture is considered before output finalization. Particularly important for coherence checking, ensuring responses account for all relevant context, and preventing local optimization at the expense of global consistency. Can catch context elements that earlier focused attention might have missed. Acts as a final integration mechanism.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{All context tokens, document-level information, global constraints}\\
 \attweak{Fine-grained local patterns, individual token details}\\
 \attreacts{Complete context, document-level coherence, global consistency requirements}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Reduced global coherence (~15-25\% increase in context inconsistencies). Responses may miss relevant information from distant parts of context. More locally optimal but globally suboptimal outputs. Coherence issues in long-context scenarios.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Reduced global coherence ( increase in context inconsistencies). Responses may miss relevant information from distant parts of context. More locally optimal but globally suboptimal outputs. Coherence issues in long-context scenarios.
+\end{ablationbox} \begin{examplebox}
 \exinput{[Long context with constraint mentioned early: "Keep it under 100 words"]}\\
 \exbehavior{Maintains attention on length constraint throughout generation}\\
 \exeffect{Final response respects word limit despite constraint appearing far from generation point}
-\end{examplebox}
-
-\headfooter{\statusobs}{focus (L), topic-relevance (M), completion-stabilization (F)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(F) Implicit-RAG Routing Head}
-\label{head:implicit-rag}
-
-\noindent\depthinfo{0.90--0.98} | \litnames{implicit-RAG head, knowledge-routing head, retrieval-simulation head, rag-routing head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statusobs}{focus (L), topic-relevance (M), completion-stabilization (F)} %-----------------------------------------------------------------------------
+\subsubsection{(F) Implicit-RAG Routing Heads}
+\label{head:implicit-rag} \noindent\depthinfo{0.90--0.98} | \litnames{implicit-RAG head, knowledge-routing head, retrieval-simulation head, rag-routing head} \begin{functiondesc}
 Routes attention to knowledge-bearing portions of the context in a way that mimics retrieval-augmented generation (RAG) patterns, even without explicit retrieval mechanisms. Identifies and prioritizes factual, knowledge-dense segments that should ground the response. Can recognize quoted material, factual statements, and authoritative information sources within context. Acts as an implicit retrieval mechanism by selectively attending to information that should be treated as retrieved knowledge. Important for grounding responses in provided context rather than pure generation.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Factual statements, quoted material, authoritative sources, knowledge-dense segments}\\
 \attweak{Opinions, questions, purely conversational elements}\\
 \attreacts{Citation markers, factual density, authoritative tone, structured information}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Reduced grounding in provided context (~20-30\% decrease in context utilization). Model more likely to rely on parametric knowledge rather than provided information. Less effective use of quoted material or reference content. Responses less anchored to specific context.
-\end{ablationbox}
-
-\begin{examplebox}
-\exinput{"According to the document: 'GDP grew 3.2\% in Q3.' What was the growth rate?"}\\
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Reduced grounding in provided context ( decrease in context utilization). Model more likely to rely on parametric knowledge rather than provided information. Less effective use of quoted material or reference content. Responses less anchored to specific context.
+\end{ablationbox} \begin{examplebox}
+\exinput{"According to the document: 'GDP grew 3.in Q3.' What was the growth rate?"}\\
 \exbehavior{Strongly attends to quoted factual content, treats as authoritative source}\\
 \exeffect{Response grounds answer in provided data: "3.2\%" rather than hallucinating different figure}
-\end{examplebox}
-
-\headfooter{\statusobs}{global-attention (F), fact (M)}
+\end{examplebox} \headfooter{\statusobs}{global-attention (F), fact (M)}

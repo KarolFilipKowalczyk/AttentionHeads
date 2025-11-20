@@ -1,145 +1,73 @@
 %=============================================================================
 \subsection{Instruction \& Intent Stack}
-\label{sec:instruction-stack}
-
-\textbf{Stack overview:} This stack processes user instructions, system prompts, and task specifications. These heads determine what the model is being asked to do and switch between different operational modes.
-
-%-----------------------------------------------------------------------------
-\subsubsection{(E) Instruction Head}
-\label{head:instruction}
-
-\noindent\depthinfo{0.05--0.20} | \litnames{instruction head, command head, directive head}
-
-\begin{functiondesc}
+\label{sec:instruction-stack} \textbf{Stack overview:} This stack processes user instructions, system prompts, and task specifications. These heads determine what the model is being asked to do and switch between different operational modes. %-----------------------------------------------------------------------------
+\subsubsection{(E) Instruction Heads}
+\label{head:instruction} \noindent\depthinfo{0.05--0.20} | \litnames{instruction head, command head, directive head} \begin{functiondesc}
 Identifies and processes user instructions and commands in the input. Distinguishes instructional content from descriptive or conversational content. Attends to imperative verbs, question structures, and directive phrases. Writes instruction-detection signals into the residual stream that influence the entire generation process. Particularly important for instruction-tuned models where following user commands is a primary capability. Operates early to set the overall response strategy.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Imperative verbs, question words, directive phrases, command structures}\\
 \attweak{Descriptive content, narrative text, background information}\\
 \attreacts{Question marks, imperative mood, explicit requests, task markers}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Reduced instruction-following capability. ~20-40\% degradation in responding appropriately to commands. Model may generate relevant content but fail to follow specific directives or answer questions directly.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Reduced instruction-following capability. degradation in responding appropriately to commands. Model may generate relevant content but fail to follow specific directives or answer questions directly.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Here's some context. Now, please summarize the key points."}\\
 \exbehavior{Strongly attends to "please summarize", identifies imperative instruction}\\
 \exeffect{Response shaped toward summary format rather than continuation}
-\end{examplebox}
-
-\headfooter{\statuswell}{system-prompt (E), task-mode (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(E) System-Prompt Head}
-\label{head:system-prompt}
-
-\noindent\depthinfo{0.08--0.22} | \litnames{system-prompt head, system head, prompt head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{system-prompt (E), task-mode (M)} %-----------------------------------------------------------------------------
+\subsubsection{(E) System-Prompt Heads}
+\label{head:system-prompt} \noindent\depthinfo{0.08--0.22} | \litnames{system-prompt head, system head, prompt head} \begin{functiondesc}
 Specifically processes system prompts that define the model's role, constraints, and operational parameters. Distinct from user instruction heads by focusing on meta-level directives about how to behave rather than what task to perform. Attends to persona definitions ("You are a helpful assistant"), behavioral constraints ("Be concise"), and system-level instructions. Particularly important in chat models where system prompts establish the interaction framework.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{System-level directives, persona definitions, behavioral constraints}\\
 \attweak{User content, task-specific instructions}\\
 \attreacts{Role definitions, constraint specifications, system markers}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Reduced adherence to system-level instructions and persona. ~25-45\% degradation in maintaining consistent role behavior. Model may ignore constraints like "be concise" or persona like "respond as a teacher".
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Reduced adherence to system-level instructions and persona. degradation in maintaining consistent role behavior. Model may ignore constraints like "be concise" or persona like "respond as a teacher".
+\end{ablationbox} \begin{examplebox}
 \exinput{"System: You are a concise technical writer. User: Explain recursion."}\\
 \exbehavior{Attends to "concise technical writer", writes persona signal}\\
 \exeffect{Response adopts technical, brief style rather than verbose explanation}
-\end{examplebox}
-
-\headfooter{\statuswell}{instruction (E), task-mode (M)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Task-Mode Head}
-\label{head:task-mode}
-
-\noindent\depthinfo{0.30--0.55} | \litnames{task head, mode head, intent head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{instruction (E), task-mode (M)} %-----------------------------------------------------------------------------
+\subsubsection{(M) Task-Mode Heads}
+\label{head:task-mode} \noindent\depthinfo{0.30--0.55} | \litnames{task head, mode head, intent head} \begin{functiondesc}
 Determines the overall task type or mode required by the input (e.g., question answering, summarization, translation, creative writing, coding). Integrates instruction signals from early layers with content analysis to classify the intended task. Writes task-mode embeddings that influence downstream processing, routing, and output formatting. Acts as a task classifier that shapes the model's approach to generation. More sophisticated than simple instruction detection, understanding task semantics.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Task indicators, instruction semantics, content type markers}\\
 \attweak{Generic content, ambiguous instructions}\\
 \attreacts{Task-specific keywords, question types, format requests, domain markers}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Task confusion, inappropriate response formats. ~30-50\% degradation in selecting correct task approach. Model may summarize when asked to analyze, or explain when asked to code.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Task confusion, inappropriate response formats. degradation in selecting correct task approach. Model may summarize when asked to analyze, or explain when asked to code.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Compare and contrast democracy and autocracy."}\\
 \exbehavior{Identifies "compare and contrast" task mode, not simple definition}\\
 \exeffect{Response structured as comparison rather than separate descriptions}
-\end{examplebox}
-
-\headfooter{\statuswell}{instruction (E), mode-switch (M), output-specification (F)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(M) Mode-Switch Head}
-\label{head:mode-switch}
-
-\noindent\depthinfo{0.40--0.60} | \litnames{mode head, switch head, transition head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statuswell}{instruction (E), mode-switch (M), output-specification (F)} %-----------------------------------------------------------------------------
+\subsubsection{(M) Mode-Switch Heads}
+\label{head:mode-switch} \noindent\depthinfo{0.40--0.60} | \litnames{mode head, switch head, transition head} \begin{functiondesc}
 Detects and handles switches between different operational modes within a single interaction. For example, transitioning from conversational mode to code generation, or from explanation to example. Responds to explicit mode-switch indicators ("Now let's...") and implicit shifts in content type. Allows models to handle multi-faceted requests that require different processing strategies for different parts. Maintains coherence across mode boundaries.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Transition phrases, mode-shift markers, content type changes}\\
 \attweak{Uniform single-mode content}\\
 \attreacts{"Now", "For example", "In other words", format shifts, topic pivots}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Difficulty handling multi-mode requests. ~15-30\% degradation on complex instructions requiring mode switches. Model may stick to single mode or switch inappropriately.
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Difficulty handling multi-mode requests. degradation on complex instructions requiring mode switches. Model may stick to single mode or switch inappropriately.
+\end{ablationbox} \begin{examplebox}
 \exinput{"Explain recursion. Now write Python code demonstrating it."}\\
 \exbehavior{Detects mode switch from explanation to code generation at "Now"}\\
 \exeffect{Response transitions smoothly from prose explanation to code block}
-\end{examplebox}
-
-\headfooter{\statusobs}{task-mode (M), output-specification (F)}
-
-%-----------------------------------------------------------------------------
-\subsubsection{(F) Output-Specification Head}
-\label{head:output-specification}
-
-\noindent\depthinfo{0.85--0.98} | \litnames{output-specification head, format-directive head}
-
-\begin{functiondesc}
+\end{examplebox} \headfooter{\statusobs}{task-mode (M), output-specification (F)} %-----------------------------------------------------------------------------
+\subsubsection{(F) Output-Specification Heads}
+\label{head:output-specification} \noindent\depthinfo{0.85--0.98} | \litnames{output-specification head, format-directive head} \begin{functiondesc}
 Enforces specific output format requirements specified in the instruction (e.g., "respond in JSON", "use bullet points", "maximum 100 words"). Operates in final layers to ensure generated content conforms to explicit format directives. Works with output-formatting heads but focuses specifically on user-specified constraints rather than general format quality. Acts as the final enforcement of explicit user requirements about output structure.
-\end{functiondesc}
-
-\begin{attentionbox}
+\end{functiondesc} \begin{attentionbox}
 \attstrong{Format specifications, length constraints, structure requirements}\\
 \attweak{Content without format requirements}\\
 \attreacts{"in JSON format", "bullet points", "no more than", structural directives}
-\end{attentionbox}
-
-\begin{ablationbox}
-\textbf{Expected ablation:} Failure to follow explicit format requirements. ~40-60\% increase in format violations. Model may generate good content but in wrong format (prose instead of bullets, etc.).
-\end{ablationbox}
-
-\begin{examplebox}
+\end{attentionbox} \begin{ablationbox}
+\textbf{Expected ablation:} Failure to follow explicit format requirements. increase in format violations. Model may generate good content but in wrong format (prose instead of bullets, etc.).
+\end{ablationbox} \begin{examplebox}
 \exinput{"List three benefits of exercise in bullet points."}\\
 \exbehavior{Attends to "bullet points" specification, enforces list format}\\
 \exeffect{Output uses bullet point structure rather than prose paragraphs}
-\end{examplebox}
-
-\headfooter{\statuswell}{task-mode (M), output-schema (L), format-consistency (F)}
+\end{examplebox} \headfooter{\statuswell}{task-mode (M), output-schema (L), format-consistency (F)}
